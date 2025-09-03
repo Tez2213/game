@@ -202,11 +202,11 @@ const PythagorasProof: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-sky-100 to-blue-100 font-sans">
       {/* Mobile App Header */}
       <div className="bg-white/90 backdrop-blur-sm shadow-sm border-b sticky top-0 z-10">
         <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/science" className="text-amber-600 hover:text-amber-800 transition-colors flex items-center gap-2 text-sm">
+          <Link href="/maths" className="text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-2 text-sm">
             ← Back
           </Link>
           <h1 className="text-lg font-bold text-gray-800">Pythagoras&apos; Playhouse 📐</h1>
@@ -224,7 +224,7 @@ const PythagorasProof: React.FC = () => {
               ref={canvasRef}
               width={600}
               height={600}
-              className="w-[320px] h-[320px] sm:w-[360px] sm:h-[360px] border-2 border-amber-200 rounded-2xl bg-gradient-to-br from-orange-25 to-amber-25 shadow-inner"
+              className="w-[320px] h-[320px] sm:w-[360px] sm:h-[360px] border-2 border-blue-200 rounded-2xl bg-gradient-to-br from-sky-25 to-blue-25 shadow-inner"
             />
           </div>
           
@@ -235,7 +235,7 @@ const PythagorasProof: React.FC = () => {
             className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 ${
               isAnimating 
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
-                : 'bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-500 hover:to-green-600 text-white shadow-lg hover:shadow-xl active:scale-95'
+                : 'bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white shadow-lg hover:shadow-xl active:scale-95'
             }`}
           >
             {isAnimating ? '✨ Animating Magic...' : '✨ Animate Proof!'}
@@ -319,7 +319,7 @@ const PythagorasProof: React.FC = () => {
       </div>
       
       {/* Enhanced Mobile Slider Styling */}
-      <style jsx>{`
+      <style>{`
         .slider-red::-webkit-slider-thumb {
           appearance: none;
           height: 28px;

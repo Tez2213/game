@@ -9,7 +9,7 @@ const nunitoSans = Nunito_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Energy Chef 🧑‍🍳",
+  title: "Eklavya",
   description: "A mindful eating game for young learners",
 };
 

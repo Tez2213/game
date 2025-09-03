@@ -231,7 +231,7 @@ export default function EnergyChefGame() {
   };
 
   return (
-    <div className="min-h-screen bg-cream font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-sky-100 to-blue-100 font-sans">
       {/* Header */}
       <div className="flex items-center justify-between p-4 bg-white shadow-sm">
         <Link href="/science" className="p-2 rounded-lg hover:bg-beige transition-colors text-2xl">

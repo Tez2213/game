@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+:root {
+  --background: #F7F5F3;
+  --foreground: #5A4A3A;
+  --primary: #E8DDD4;
+  --secondary: #D4C4B0;
+  --accent: #B8A082;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-nunito-sans), system-ui, sans-serif;
+}
+
+/* Custom animations for the game */
+@keyframes confetti-fall {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+.confetti-piece {
+  animation: confetti-fall 3s linear forwards;
+}
+
+/* Gentle hover effects */
+.ingredient-button {
+  transition: all 0.2s ease-out;
+}
+
+.ingredient-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.ingredient-button:active {
+  transform: scale(0.95);
+}
+
+/* Cooking pot animations */
+.cooking-pot {
+  transition: all 0.3s ease-out;
+}
+
+.cooking-pot.cooking {
+  animation: pulse 2s infinite;
+}
+
+/* Success modal animations */
+.success-modal {
+  animation: modalSlideUp 0.3s ease-out;
+}
+
+@keyframes modalSlideUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(50px) scale(0.8); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+}

@@ -187,7 +187,7 @@ export default function EnergyChefGame() {
         >
           <div className="text-6xl mb-2">{currentCustomer.emoji}</div>
           <div className="bg-white rounded-lg p-4 shadow-sm max-w-xs">
-            <p className="text-gray-800 font-medium text-sm">"{currentCustomer.need}"</p>
+            <p className="text-gray-800 font-medium text-sm">&ldquo;{currentCustomer.need}&rdquo;</p>
           </div>
         </div>
       </div>

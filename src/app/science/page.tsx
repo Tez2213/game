@@ -24,6 +24,27 @@ export default function Science() {
           >
             ☀️ Solar Game
           </Link>
+
+          <Link 
+            href="/science/temperature-game"
+            className="block w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-200"
+          >
+            🌡️ Temperature Master
+          </Link>
+
+          <Link 
+            href="/science/material-game"
+            className="block w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-200"
+          >
+            🔬 Material Mix-Up
+          </Link>
+
+          <Link 
+            href="/science/water-cycle-game"
+            className="block w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-200"
+          >
+            💧 Water Cycle Adventure
+          </Link>
         </div>
         
         <Link 

@@ -5,14 +5,126 @@ import Link from 'next/link';
 
 // Planet data with colors and sizes - optimized for mobile
 const planetsData = [
-  { name: 'Mercury', color: '#8C7853', size: 20, distance: 60, hint: 'Smallest planet, closest to Sun' },
-  { name: 'Venus', color: '#FFC649', size: 25, distance: 80, hint: 'Hottest planet with thick clouds' },
-  { name: 'Earth', color: '#6B93D6', size: 28, distance: 100, hint: 'Our blue home planet' },
-  { name: 'Mars', color: '#CD5C5C', size: 22, distance: 120, hint: 'The Red Planet' },
-  { name: 'Jupiter', color: '#D8CA9D', size: 45, distance: 150, hint: 'Largest planet, gas giant' },
-  { name: 'Saturn', color: '#FAD5A5', size: 40, distance: 180, hint: 'Planet with beautiful rings' },
-  { name: 'Uranus', color: '#4FD0E7', size: 30, distance: 210, hint: 'Ice giant tilted sideways' },
-  { name: 'Neptune', color: '#4B70DD', size: 30, distance: 240, hint: 'Windiest planet, deep blue' }
+  { 
+    name: 'Mercury', 
+    color: '#8C7853', 
+    size: 20, 
+    distance: 60, 
+    hint: 'Smallest planet, closest to Sun',
+    facts: [
+      'Mercury is the smallest planet in our solar system',
+      'A day on Mercury lasts 59 Earth days',
+      'Mercury has no atmosphere to retain heat',
+      'Temperatures range from 800°F to -300°F'
+    ],
+    funFact: 'Mercury is named after the Roman messenger god because it moves so fast around the Sun!',
+    relatedTopics: ['Orbital mechanics', 'Temperature extremes', 'Planetary composition']
+  },
+  { 
+    name: 'Venus', 
+    color: '#FFC649', 
+    size: 25, 
+    distance: 80, 
+    hint: 'Hottest planet with thick clouds',
+    facts: [
+      'Venus is the hottest planet in our solar system',
+      'It rotates backwards compared to most planets',
+      'Venus has a thick, toxic atmosphere',
+      'A day on Venus is longer than its year'
+    ],
+    funFact: 'Venus is sometimes called Earth\'s twin, but it\'s more like Earth\'s evil twin with its hellish conditions!',
+    relatedTopics: ['Greenhouse effect', 'Atmospheric pressure', 'Retrograde rotation']
+  },
+  { 
+    name: 'Earth', 
+    color: '#6B93D6', 
+    size: 28, 
+    distance: 100, 
+    hint: 'Our blue home planet',
+    facts: [
+      'Earth is the only known planet with life',
+      '71% of Earth is covered by water',
+      'Earth has one natural satellite - the Moon',
+      'It takes 365.25 days to orbit the Sun'
+    ],
+    funFact: 'Earth is the only planet not named after a Roman or Greek god - it comes from Old English meaning "ground"!',
+    relatedTopics: ['Biodiversity', 'Water cycle', 'Magnetic field']
+  },
+  { 
+    name: 'Mars', 
+    color: '#CD5C5C', 
+    size: 22, 
+    distance: 120, 
+    hint: 'The Red Planet',
+    facts: [
+      'Mars appears red due to iron oxide (rust)',
+      'Mars has the largest volcano in the solar system',
+      'It has two small moons: Phobos and Deimos',
+      'Mars has seasons similar to Earth'
+    ],
+    funFact: 'Mars has dust storms that can cover the entire planet and last for months!',
+    relatedTopics: ['Space exploration', 'Terraforming', 'Polar ice caps']
+  },
+  { 
+    name: 'Jupiter', 
+    color: '#D8CA9D', 
+    size: 45, 
+    distance: 150, 
+    hint: 'Largest planet, gas giant',
+    facts: [
+      'Jupiter is larger than all other planets combined',
+      'It has over 80 known moons',
+      'Jupiter\'s Great Red Spot is a giant storm',
+      'It acts as a "cosmic vacuum cleaner"'
+    ],
+    funFact: 'Jupiter is like a failed star - if it were 80 times more massive, it could have become a second sun!',
+    relatedTopics: ['Gas giants', 'Galilean moons', 'Planetary protection']
+  },
+  { 
+    name: 'Saturn', 
+    color: '#FAD5A5', 
+    size: 40, 
+    distance: 180, 
+    hint: 'Planet with beautiful rings',
+    facts: [
+      'Saturn has the most spectacular ring system',
+      'It\'s less dense than water',
+      'Saturn has 83 confirmed moons',
+      'Its moon Titan has lakes of liquid methane'
+    ],
+    funFact: 'Saturn would float in water if you could find a bathtub big enough!',
+    relatedTopics: ['Ring systems', 'Moon systems', 'Density and composition']
+  },
+  { 
+    name: 'Uranus', 
+    color: '#4FD0E7', 
+    size: 30, 
+    distance: 210, 
+    hint: 'Ice giant tilted sideways',
+    facts: [
+      'Uranus rotates on its side',
+      'It\'s made mostly of water, methane, and ammonia',
+      'Uranus has faint rings',
+      'It\'s the coldest planetary atmosphere'
+    ],
+    funFact: 'Uranus spins like a rolling ball instead of a spinning top - probably due to an ancient collision!',
+    relatedTopics: ['Axial tilt', 'Ice giants', 'Magnetic fields']
+  },
+  { 
+    name: 'Neptune', 
+    color: '#4B70DD', 
+    size: 30, 
+    distance: 240, 
+    hint: 'Windiest planet, deep blue',
+    facts: [
+      'Neptune has the fastest winds in the solar system',
+      'It takes 165 Earth years to orbit the Sun',
+      'Neptune was discovered through mathematics',
+      'It has 14 known moons'
+    ],
+    funFact: 'Neptune\'s winds can reach 1,200 mph - faster than the speed of sound on Earth!',
+    relatedTopics: ['Mathematical prediction', 'Extreme weather', 'Discovery methods']
+  }
 ];
 
 type Planet = typeof planetsData[0];
@@ -100,6 +212,11 @@ export default function SolarSystemExplorer() {
   const [highlightedOrbit, setHighlightedOrbit] = useState(-1);
   const [orbitAngles, setOrbitAngles] = useState<{[key: string]: number}>({});
   const [screenSize, setScreenSize] = useState({ width: 400, height: 600 });
+  const [showPlanetInfo, setShowPlanetInfo] = useState(false);
+  const [selectedPlanetInfo, setSelectedPlanetInfo] = useState<Planet | null>(null);
+  const [showAIsuggestions, setShowAIsuggestions] = useState(false);
+  const [userInterests, setUserInterests] = useState<string[]>([]);
+  const [showFacts, setShowFacts] = useState(false);
 
   // Responsive design setup
   useEffect(() => {
@@ -156,6 +273,11 @@ export default function SolarSystemExplorer() {
       setAvailablePlanets(prev => prev.filter(p => p.name !== planetData.name));
       setOrbitAngles(prev => ({ ...prev, [planetData.name]: 0 }));
       playCorrectSound();
+      
+      // Show planet info and AI suggestions after correct placement
+      setSelectedPlanetInfo(planetData);
+      setShowPlanetInfo(true);
+      setShowAIsuggestions(true);
     } else {
       // Incorrect placement - shake animation
       const element = document.querySelector(`[data-planet="${planetData.name}"]`) as HTMLElement;
@@ -167,6 +289,42 @@ export default function SolarSystemExplorer() {
       }
       playIncorrectSound();
     }
+  };
+
+  const handleOrbitingPlanetClick = (planetData: Planet) => {
+    // Show detailed info when clicking on orbiting planets
+    setSelectedPlanetInfo(planetData);
+    setShowPlanetInfo(true);
+    setShowFacts(true);
+  };
+
+  const addUserInterest = (topic: string) => {
+    if (!userInterests.includes(topic)) {
+      setUserInterests(prev => [...prev, topic]);
+    }
+  };
+
+  const getAISuggestions = (planet: Planet) => {
+    const suggestions = [];
+    
+    if (planet.name === 'Mars') {
+      suggestions.push('🚀 Would you like to learn about Mars rovers and space exploration?');
+      suggestions.push('🏠 Interested in how humans might live on Mars?');
+    }
+    if (planet.name === 'Jupiter') {
+      suggestions.push('🌙 Want to explore Jupiter\'s fascinating moons like Europa?');
+      suggestions.push('🌊 Curious about the possibility of oceans under ice?');
+    }
+    if (planet.name === 'Saturn') {
+      suggestions.push('💍 Would you like to learn how Saturn\'s rings formed?');
+      suggestions.push('🛰️ Interested in the Cassini mission to Saturn?');
+    }
+    if (planet.name === 'Earth') {
+      suggestions.push('🌍 Want to learn about climate change and Earth\'s atmosphere?');
+      suggestions.push('🌙 Curious about how the Moon affects Earth?');
+    }
+    
+    return suggestions;
   };
 
   const playCorrectSound = () => {
@@ -240,6 +398,10 @@ export default function SolarSystemExplorer() {
     setCurrentHint('');
     setHighlightedOrbit(-1);
     setOrbitAngles({});
+    setShowPlanetInfo(false);
+    setSelectedPlanetInfo(null);
+    setShowAIsuggestions(false);
+    setShowFacts(false);
   };
 
   return (
@@ -270,7 +432,7 @@ export default function SolarSystemExplorer() {
       {/* Mobile-optimized Header */}
       <div className="absolute top-2 left-2 right-2 z-10">
         <div className="flex items-center justify-between mb-2">
-          <Link href="/science" className="text-white hover:text-yellow-300 transition-colors text-sm">
+          <Link href="https://eklavyaa.vercel.app/chapters/science-world" className="text-white hover:text-yellow-300 transition-colors text-sm">
             ← Back
           </Link>
           <button
@@ -312,12 +474,135 @@ export default function SolarSystemExplorer() {
           <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white p-6 md:p-10 rounded-xl text-center shadow-2xl max-w-sm">
             <h2 className="text-2xl md:text-4xl font-bold mb-4">🎉 Amazing! 🎉</h2>
             <p className="text-sm md:text-xl mb-6">You completed the Solar System!</p>
-            <button
-              onClick={resetGame}
-              className="bg-white text-green-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition-all shadow-lg"
-            >
-              🚀 Play Again
-            </button>
+            <div className="space-y-3">
+              <button
+                onClick={resetGame}
+                className="w-full bg-white text-green-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition-all shadow-lg"
+              >
+                🚀 Play Again
+              </button>
+              <button
+                onClick={() => {
+                  setShowFacts(true);
+                  setSelectedPlanetInfo(planetsData[Math.floor(Math.random() * planetsData.length)]);
+                  setShowPlanetInfo(true);
+                }}
+                className="w-full bg-yellow-400 text-black px-6 py-3 rounded-lg font-bold hover:bg-yellow-300 transition-all shadow-lg"
+              >
+                🧠 Learn More Facts
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Planet Information Modal */}
+      {showPlanetInfo && selectedPlanetInfo && (
+        <div className="absolute inset-0 bg-black bg-opacity-80 flex items-center justify-center z-40 p-4">
+          <div className="bg-white rounded-xl p-6 max-w-sm max-h-[80vh] overflow-y-auto shadow-2xl">
+            <div className="text-center mb-4">
+              <div 
+                className="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center border-4 border-gray-300"
+                style={{ backgroundColor: selectedPlanetInfo.color }}
+              >
+                <span className="text-white text-2xl">
+                  {selectedPlanetInfo.name === 'Earth' && '🌍'}
+                  {selectedPlanetInfo.name === 'Mars' && '🔴'}
+                  {selectedPlanetInfo.name === 'Jupiter' && '🪐'}
+                  {selectedPlanetInfo.name === 'Saturn' && '🪐'}
+                </span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800">{selectedPlanetInfo.name}</h3>
+              <p className="text-blue-600 font-medium">{selectedPlanetInfo.hint}</p>
+            </div>
+
+            {showFacts && (
+              <div className="mb-4">
+                <h4 className="font-bold text-gray-800 mb-2">🔬 Amazing Facts:</h4>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  {selectedPlanetInfo.facts.map((fact: string, index: number) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="text-blue-500 font-bold">•</span>
+                      <span>{fact}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div className="mb-4 p-3 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
+              <h4 className="font-bold text-orange-800 mb-2">💡 Fun Fact:</h4>
+              <p className="text-orange-700 text-sm">{selectedPlanetInfo.funFact}</p>
+            </div>
+
+            <div className="mb-4">
+              <h4 className="font-bold text-gray-800 mb-2">🔗 Related Topics:</h4>
+              <div className="flex flex-wrap gap-2">
+                {selectedPlanetInfo.relatedTopics.map((topic: string, index: number) => (
+                  <button
+                    key={index}
+                    onClick={() => addUserInterest(topic)}
+                    className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                      userInterests.includes(topic)
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-blue-100 text-blue-800 hover:bg-blue-200'
+                    }`}
+                  >
+                    {topic}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {showAIsuggestions && (
+              <div className="mb-4 p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200">
+                <h4 className="font-bold text-purple-800 mb-2">🤖 AI Suggestions:</h4>
+                <div className="space-y-2">
+                  {getAISuggestions(selectedPlanetInfo).map((suggestion, index) => (
+                    <button
+                      key={index}
+                      onClick={() => addUserInterest(suggestion)}
+                      className="block w-full text-left text-sm text-purple-700 hover:text-purple-900 hover:bg-purple-100 p-2 rounded transition-colors"
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {userInterests.length > 0 && (
+              <div className="mb-4 p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
+                <h4 className="font-bold text-green-800 mb-2">🎯 Your Learning Interests:</h4>
+                <div className="text-sm text-green-700 space-y-1">
+                  {userInterests.slice(-3).map((interest, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <span className="text-green-500">✓</span>
+                      <span>{interest}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowFacts(!showFacts)}
+                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg font-medium transition-colors"
+              >
+                {showFacts ? 'Hide Facts' : 'Show Facts'}
+              </button>
+              <button
+                onClick={() => {
+                  setShowPlanetInfo(false);
+                  setShowAIsuggestions(false);
+                  setShowFacts(false);
+                }}
+                className="flex-1 bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-lg font-medium transition-colors"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -359,7 +644,8 @@ export default function SolarSystemExplorer() {
             planetData={planet}
             isInOrbit={true}
             angle={orbitAngles[planet.name] || 0}
-            isClickable={false}
+            onClick={() => handleOrbitingPlanetClick(planet)}
+            isClickable={true}
             centerX={centerX}
             centerY={centerY}
           />
@@ -404,6 +690,9 @@ export default function SolarSystemExplorer() {
               </p>
               <p className="text-blue-300 text-xs mt-1">
                 Next: <strong>{planetsData[placedPlanets.length]?.name || 'Complete!'}</strong>
+              </p>
+              <p className="text-yellow-200 text-xs mt-1">
+                💡 Click orbiting planets to learn more!
               </p>
             </div>
           )}

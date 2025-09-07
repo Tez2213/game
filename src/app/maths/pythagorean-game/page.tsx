@@ -9,6 +9,12 @@ const PythagorasProof: React.FC = () => {
   const [b, setB] = useState<number>(4);
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
   
+  // New states for enhanced interactions
+  const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+  const [showFact, setShowFact] = useState<boolean>(false);
+  const [currentFact, setCurrentFact] = useState<string>('');
+  const [userActions, setUserActions] = useState<number>(0);
+  
   // Canvas reference
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
@@ -17,6 +23,50 @@ const PythagorasProof: React.FC = () => {
   const aSquared = a * a;
   const bSquared = b * b;
   const cSquared = c * c;
+  
+  // Educational facts database
+  const facts = {
+    basic: "Pythagoras was a Greek mathematician who lived around 570-495 BC. His theorem is one of the most famous in mathematics!",
+    realWorld: "Pythagorean theorem is used everywhere! Construction workers use it to build square corners, GPS systems use it to calculate distances, and even video game graphics rely on it!",
+    perfectTriangles: "The triangle 3-4-5 is called a 'Pythagorean triple' - where all sides are whole numbers. Other examples include 5-12-13 and 8-15-17!",
+    squares: "The squares you see represent the actual area! If you built real squares on each side of a right triangle, the areas would perfectly balance according to the theorem.",
+    history: "Ancient Egyptians used the 3-4-5 triangle to build the pyramids thousands of years before Pythagoras! They called it the 'sacred triangle'.",
+    isosceles: "When both legs (a and b) are equal, you get an isosceles right triangle - it appears in square diagonals and has special properties!",
+    golden: "Try making a=3, b=4 to see the famous 3-4-5 triangle that ancient builders loved!"
+  };
+  
+  // Get triangle characteristics
+  const getTriangleType = () => {
+    if (Math.abs(a - b) < 0.1) return 'isosceles';
+    if (a === 3 && b === 4) return 'golden';
+    if (Math.abs(a - Math.round(a)) < 0.1 && Math.abs(b - Math.round(b)) < 0.1 && Math.abs(c - Math.round(c)) < 0.1) return 'perfectTriangles';
+    return 'basic';
+  };
+  
+  // AI Suggestions based on user actions
+  const getSuggestions = () => {
+    const triangleType = getTriangleType();
+    const suggestions = [];
+    
+    if (triangleType === 'isosceles') {
+      suggestions.push("🔍 Try: Set one side to 1 and see what happens to the other!");
+      suggestions.push("📐 Explore: What happens when you make a square's diagonal?");
+    } else if (triangleType === 'golden') {
+      suggestions.push("🏛️ Try: This 3-4-5 triangle built the pyramids!");
+      suggestions.push("🔢 Explore: Can you find other whole number triangles?");
+    } else if (triangleType === 'perfectTriangles') {
+      suggestions.push("⭐ Try: Look for other Pythagorean triples like 5-12-13!");
+      suggestions.push("🎯 Challenge: Can you make both legs the same length?");
+    } else {
+      suggestions.push("🔄 Try: Make both sides equal and see the magic!");
+      suggestions.push("📏 Explore: Set exact whole numbers like 6 and 8!");
+    }
+    
+    suggestions.push("🎨 Create: Draw your triangle on paper and verify!");
+    suggestions.push("🧮 Calculate: Use a calculator to double-check the math!");
+    
+    return suggestions;
+  };
   
   // Drawing logic using useEffect
   useEffect(() => {
@@ -192,13 +242,153 @@ const PythagorasProof: React.FC = () => {
     
   }, [a, b, c, aSquared, bSquared, cSquared]);
 
+  // AI Suggestions Modal Component
+  const SuggestionsModal = () => {
+    if (!showSuggestions) return null;
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl max-w-sm w-full p-6 shadow-2xl animate-scale-in">
+          <div className="text-center mb-4">
+            <div className="text-4xl mb-2">🤖</div>
+            <h3 className="text-lg font-bold text-gray-800">AI Learning Suggestions</h3>
+            <p className="text-sm text-gray-600">Ready to explore more?</p>
+          </div>
+          
+          <div className="space-y-3 mb-6">
+            {getSuggestions().slice(0, 4).map((suggestion, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setShowSuggestions(false);
+                  // Auto-apply suggestion if it involves specific values
+                  if (suggestion.includes('3-4-5')) {
+                    setA(3);
+                    setB(4);
+                  } else if (suggestion.includes('equal')) {
+                    setB(a);
+                  } else if (suggestion.includes('6 and 8')) {
+                    setA(6);
+                    setB(8);
+                  }
+                }}
+                className="w-full text-left p-3 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition-colors"
+              >
+                <span className="text-sm text-gray-700">{suggestion}</span>
+              </button>
+            ))}
+          </div>
+          
+          <div className="flex gap-2">
+            <button
+              onClick={() => setShowFact(true)}
+              className="flex-1 bg-green-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-green-600 transition-colors text-sm"
+            >
+              📚 Show Fact
+            </button>
+            <button
+              onClick={() => setShowSuggestions(false)}
+              className="flex-1 bg-gray-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-gray-600 transition-colors text-sm"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+  
+  // Educational Fact Modal Component
+  const FactModal = () => {
+    if (!showFact) return null;
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl max-w-sm w-full p-6 shadow-2xl animate-scale-in">
+          <div className="text-center mb-4">
+            <div className="text-4xl mb-2">💡</div>
+            <h3 className="text-lg font-bold text-gray-800">Did You Know?</h3>
+          </div>
+          
+          <div className="mb-6">
+            <p className="text-sm text-gray-700 leading-relaxed">{currentFact}</p>
+          </div>
+          
+          <div className="space-y-3 mb-4">
+            <div className="text-center text-xs text-gray-600">Want to learn more about:</div>
+            <div className="flex flex-wrap gap-2 justify-center">
+              {['🏛️ History', '🔢 Numbers', '🏗️ Real World', '📐 Geometry'].map((topic) => (
+                <button
+                  key={topic}
+                  onClick={() => {
+                    const topicFacts = {
+                      '🏛️ History': facts.history,
+                      '🔢 Numbers': facts.perfectTriangles,
+                      '🏗️ Real World': facts.realWorld,
+                      '📐 Geometry': facts.squares
+                    };
+                    setCurrentFact(topicFacts[topic as keyof typeof topicFacts]);
+                  }}
+                  className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium hover:bg-blue-200 transition-colors"
+                >
+                  {topic}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          <div className="flex gap-2">
+            <button
+              onClick={() => {
+                setShowFact(false);
+                setShowSuggestions(true);
+              }}
+              className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-600 transition-colors text-sm"
+            >
+              🤖 More Ideas
+            </button>
+            <button
+              onClick={() => setShowFact(false)}
+              className="flex-1 bg-gray-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-gray-600 transition-colors text-sm"
+            >
+              Got it! 👍
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // Animation function
   const animateProof = () => {
     setIsAnimating(true);
-    // Simple animation state - you can expand this with actual tile animation later
+    setUserActions(prev => prev + 1);
+    
+    // Show suggestions after animation
     setTimeout(() => {
       setIsAnimating(false);
+      setShowSuggestions(true);
+      
+      // Show relevant fact based on triangle type
+      const triangleType = getTriangleType();
+      setCurrentFact(facts[triangleType as keyof typeof facts]);
+      setShowFact(true);
     }, 2000);
+  };
+  
+  // Handle slider changes with suggestions
+  const handleSliderChange = (value: number, side: 'a' | 'b') => {
+    if (side === 'a') setA(value);
+    else setB(value);
+    
+    setUserActions(prev => prev + 1);
+    
+    // Show suggestions after several interactions
+    if (userActions > 0 && userActions % 3 === 0) {
+      setTimeout(() => {
+        setShowSuggestions(true);
+      }, 500);
+    }
   };
 
   return (
@@ -206,7 +396,7 @@ const PythagorasProof: React.FC = () => {
       {/* Mobile App Header */}
       <div className="bg-white/90 backdrop-blur-sm shadow-sm border-b sticky top-0 z-10">
         <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/maths" className="text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-2 text-sm">
+          <Link href="https://eklavyaa.vercel.app/chapters/maths-world" className="text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-2 text-sm">
             ← Back
           </Link>
           <h1 className="text-lg font-bold text-gray-800">Pythagoras&apos; Playhouse 📐</h1>
@@ -241,6 +431,14 @@ const PythagorasProof: React.FC = () => {
             {isAnimating ? '✨ Animating Magic...' : '✨ Animate Proof!'}
           </button>
           
+          {/* AI Suggestions Button */}
+          <button
+            onClick={() => setShowSuggestions(true)}
+            className="w-full py-3 px-6 rounded-xl font-medium text-base bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600 text-white shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300"
+          >
+            🤖 Get AI Learning Suggestions
+          </button>
+          
           {/* Controls Section */}
           <div className="w-full flex flex-col gap-6">
             <h3 className="text-xl font-bold text-gray-800 text-center">Adjust Triangle Sides</h3>
@@ -256,7 +454,7 @@ const PythagorasProof: React.FC = () => {
                 max="8"
                 step="0.1"
                 value={a}
-                onChange={(e) => setA(parseFloat(e.target.value))}
+                onChange={(e) => handleSliderChange(parseFloat(e.target.value), 'a')}
                 className="w-full h-3 bg-red-200 rounded-lg appearance-none cursor-pointer slider-red"
               />
             </div>
@@ -272,7 +470,7 @@ const PythagorasProof: React.FC = () => {
                 max="8"
                 step="0.1"
                 value={b}
-                onChange={(e) => setB(parseFloat(e.target.value))}
+                onChange={(e) => handleSliderChange(parseFloat(e.target.value), 'b')}
                 className="w-full h-3 bg-blue-200 rounded-lg appearance-none cursor-pointer slider-blue"
               />
             </div>
@@ -296,13 +494,31 @@ const PythagorasProof: React.FC = () => {
             {/* Verification */}
             <div className="text-center">
               {Math.abs(aSquared + bSquared - cSquared) < 0.01 ? (
-                <div className="bg-green-100 text-green-800 px-4 py-3 rounded-lg font-bold text-lg">
+                <div className="bg-green-100 text-green-800 px-4 py-3 rounded-lg font-bold text-lg mb-3">
                   ✅ Perfect! The theorem is verified!
                 </div>
               ) : (
-                <div className="bg-amber-100 text-amber-800 px-4 py-3 rounded-lg font-bold">
+                <div className="bg-amber-100 text-amber-800 px-4 py-3 rounded-lg font-bold mb-3">
                   📏 Explore different triangles
                 </div>
+              )}
+              
+              {/* Progress indicator */}
+              <div className="text-xs text-gray-600 mb-2">
+                🎯 Interactions: {userActions} | Triangle Type: {getTriangleType()}
+              </div>
+              
+              {/* Quick challenge button */}
+              {userActions > 5 && (
+                <button
+                  onClick={() => {
+                    setCurrentFact(facts.golden);
+                    setShowFact(true);
+                  }}
+                  className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-medium hover:bg-yellow-200 transition-colors"
+                >
+                  🏆 Try the Famous 3-4-5 Triangle!
+                </button>
               )}
             </div>
           </div>
@@ -318,8 +534,29 @@ const PythagorasProof: React.FC = () => {
         </div>
       </div>
       
+      {/* AI Suggestions Modal */}
+      <SuggestionsModal />
+      
+      {/* Educational Fact Modal */}
+      <FactModal />
+      
       {/* Enhanced Mobile Slider Styling */}
       <style>{`
+        .animate-scale-in {
+          animation: scaleIn 0.3s ease-out;
+        }
+        
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.8);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        
         .slider-red::-webkit-slider-thumb {
           appearance: none;
           height: 28px;

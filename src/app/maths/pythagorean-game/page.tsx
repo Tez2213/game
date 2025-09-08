@@ -14,6 +14,7 @@ const PythagorasProof: React.FC = () => {
   const [showFact, setShowFact] = useState<boolean>(false);
   const [currentFact, setCurrentFact] = useState<string>('');
   const [userActions, setUserActions] = useState<number>(0);
+  const [lastSuggestionTime, setLastSuggestionTime] = useState<number>(0);
   
   // Canvas reference
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -247,8 +248,8 @@ const PythagorasProof: React.FC = () => {
     if (!showSuggestions) return null;
     
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-xl max-w-sm w-full p-6 shadow-2xl animate-scale-in">
+      <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl max-w-sm w-full p-6 shadow-2xl animate-scale-in border border-gray-200">
           <div className="text-center mb-4">
             <div className="text-4xl mb-2">🤖</div>
             <h3 className="text-lg font-bold text-gray-800">AI Learning Suggestions</h3>
@@ -303,8 +304,8 @@ const PythagorasProof: React.FC = () => {
     if (!showFact) return null;
     
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-xl max-w-sm w-full p-6 shadow-2xl animate-scale-in">
+      <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl max-w-sm w-full p-6 shadow-2xl animate-scale-in border border-gray-200">
           <div className="text-center mb-4">
             <div className="text-4xl mb-2">💡</div>
             <h3 className="text-lg font-bold text-gray-800">Did You Know?</h3>
@@ -364,51 +365,44 @@ const PythagorasProof: React.FC = () => {
     setIsAnimating(true);
     setUserActions(prev => prev + 1);
     
-    // Show suggestions after animation
-    setTimeout(() => {
-      setIsAnimating(false);
-      setShowSuggestions(true);
-      
-      // Show relevant fact based on triangle type
-      const triangleType = getTriangleType();
-      setCurrentFact(facts[triangleType as keyof typeof facts]);
-      setShowFact(true);
-    }, 2000);
+    // Show suggestions immediately without delay
+    setIsAnimating(false);
+    setShowSuggestions(true);
+    
+    // Show relevant fact based on triangle type
+    const triangleType = getTriangleType();
+    setCurrentFact(facts[triangleType as keyof typeof facts]);
+    setShowFact(true);
   };
   
-  // Handle slider changes with suggestions
+  // Handle slider changes
   const handleSliderChange = (value: number, side: 'a' | 'b') => {
     if (side === 'a') setA(value);
     else setB(value);
     
     setUserActions(prev => prev + 1);
-    
-    // Show suggestions after several interactions
-    if (userActions > 0 && userActions % 3 === 0) {
-      setTimeout(() => {
-        setShowSuggestions(true);
-      }, 500);
-    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-100 to-blue-100 font-sans">
-      {/* Mobile App Header */}
-      <div className="bg-white/90 backdrop-blur-sm shadow-sm border-b sticky top-0 z-10">
-        <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="https://eklavyaa.vercel.app/chapters/maths-world" className="text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-2 text-sm">
-            ← Back
-          </Link>
-          <h1 className="text-lg font-bold text-gray-800">Pythagoras&apos; Playhouse 📐</h1>
-          <div className="w-12"></div>
+      {/* Main Game Content */}
+      <div className={`${showSuggestions || showFact ? 'filter blur-sm' : ''}`}>
+        {/* Mobile App Header */}
+        <div className="bg-white/90 backdrop-blur-sm shadow-sm border-b sticky top-0 z-10">
+          <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+            <Link href="https://eklavyaa.vercel.app/chapters/maths-world" className="text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-2 text-sm">
+              ← Back
+            </Link>
+            <h1 className="text-lg font-bold text-gray-800">Pythagoras&apos; Playhouse 📐</h1>
+            <div className="w-12"></div>
+          </div>
         </div>
-      </div>
-      
-      {/* Main Content - Mobile App Layout */}
-      <div className="max-w-md mx-auto p-4 pb-8">
-        <div className="flex flex-col items-center gap-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 border border-white/20">
+        
+        {/* Main Content - Mobile App Layout */}
+        <div className="max-w-md mx-auto p-4 pb-8">
+          <div className="flex flex-col items-center gap-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 border border-white/20">
           
-          {/* Large Canvas for Mobile */}
+          {/* Canvas */}
           <div className="w-full flex justify-center">
             <canvas
               ref={canvasRef}
@@ -417,27 +411,6 @@ const PythagorasProof: React.FC = () => {
               className="w-[320px] h-[320px] sm:w-[360px] sm:h-[360px] border-2 border-blue-200 rounded-2xl bg-gradient-to-br from-sky-25 to-blue-25 shadow-inner"
             />
           </div>
-          
-          {/* Animate Button */}
-          <button
-            onClick={animateProof}
-            disabled={isAnimating}
-            className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 ${
-              isAnimating 
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
-                : 'bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white shadow-lg hover:shadow-xl active:scale-95'
-            }`}
-          >
-            {isAnimating ? '✨ Animating Magic...' : '✨ Animate Proof!'}
-          </button>
-          
-          {/* AI Suggestions Button */}
-          <button
-            onClick={() => setShowSuggestions(true)}
-            className="w-full py-3 px-6 rounded-xl font-medium text-base bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600 text-white shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300"
-          >
-            🤖 Get AI Learning Suggestions
-          </button>
           
           {/* Controls Section */}
           <div className="w-full flex flex-col gap-6">
@@ -507,20 +480,21 @@ const PythagorasProof: React.FC = () => {
               <div className="text-xs text-gray-600 mb-2">
                 🎯 Interactions: {userActions} | Triangle Type: {getTriangleType()}
               </div>
-              
-              {/* Quick challenge button */}
-              {userActions > 5 && (
-                <button
-                  onClick={() => {
-                    setCurrentFact(facts.golden);
-                    setShowFact(true);
-                  }}
-                  className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-medium hover:bg-yellow-200 transition-colors"
-                >
-                  🏆 Try the Famous 3-4-5 Triangle!
-                </button>
-              )}
             </div>
+            
+            {/* Facts Button */}
+            <button
+              onClick={() => {
+                setUserActions(prev => prev + 1);
+                setShowSuggestions(true);
+                const triangleType = getTriangleType();
+                setCurrentFact(facts[triangleType as keyof typeof facts]);
+                setShowFact(true);
+              }}
+              className="w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white shadow-lg hover:shadow-xl active:scale-95"
+            >
+              📚 Facts
+            </button>
           </div>
           
           {/* Educational Information - Compact for Mobile */}
@@ -601,6 +575,13 @@ const PythagorasProof: React.FC = () => {
           border-radius: 6px;
         }
       `}</style>
+      </div>
+      
+      {/* AI Suggestions Modal */}
+      <SuggestionsModal />
+      
+      {/* Educational Fact Modal */}
+      <FactModal />
     </div>
   );
 };

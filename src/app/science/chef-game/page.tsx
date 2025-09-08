@@ -742,7 +742,7 @@ const SuccessModal: React.FC<{
   animal: Animal;
   onShowFact: () => void;
   onTopicSelect: (topic: string) => void;
-}> = ({ show, onNext, isCorrect, animal, onShowFact, onTopicSelect }) => {
+}> = ({ show, onNext, isCorrect, onShowFact, onTopicSelect }) => {
   if (!show) return null;
 
   return (
@@ -924,51 +924,7 @@ export default function EnergyChefGame() {
   };
 
   // Enhanced interaction functions
-  const handleIngredientClick = (ingredientId: string) => {
-    addToPot(ingredientId);
-    // Show ingredient fact on click
-    setShowIngredientFact(ingredientId);
-    setTimeout(() => setShowIngredientFact(null), 3000);
-  };
-
-  const addToTopics = (topic: string) => {
-    if (!selectedTopics.includes(topic)) {
-      setSelectedTopics([...selectedTopics, topic]);
-    }
-  };
-
-  const addUserQuestion = (question: string) => {
-    if (!userQuestions.includes(question)) {
-      setUserQuestions([...userQuestions, question]);
-    }
-  };
-
-  const getAISuggestions = () => {
-    const suggestions = [];
-    
-    // Diet-specific suggestions
-    if (currentAnimal.dietType === 'Carnivorous') {
-      suggestions.push("🦷 Learn about sharp teeth and hunting adaptations");
-      suggestions.push("🏃 Explore how predators track their prey");
-    } else if (currentAnimal.dietType === 'Herbivorous') {
-      suggestions.push("🦷 Discover flat teeth designed for grinding plants");
-      suggestions.push("🌱 Learn about symbiotic relationships with gut bacteria");
-    } else {
-      suggestions.push("🔄 Understand seasonal diet changes");
-      suggestions.push("🧠 Explore problem-solving skills in omnivores");
-    }
-    
-    // Topic-based suggestions
-    if (selectedTopics.includes('Digestive System')) {
-      suggestions.push("📚 Study comparative anatomy across species");
-    }
-    if (selectedTopics.includes('Habitat')) {
-      suggestions.push("🌍 Explore ecosystems and food webs");
-    }
-    
-    return suggestions;
-  };
-
+  
   const resetPot = () => {
     setCookingPot([]);
     playSound('reset');
@@ -987,9 +943,7 @@ export default function EnergyChefGame() {
               ←
             </Link>
             <h1 className="text-xl font-semibold text-gray-800">Energy Chef 🧑‍🍳</h1>
-            <button className="p-2 rounded-lg hover:bg-beige transition-colors text-xl">
-              ⚙️
-            </button>
+            <div className="w-10"></div>
           </div>
         
           {/* Progress Bar */}

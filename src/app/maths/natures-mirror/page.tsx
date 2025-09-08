@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 
 // Types
@@ -357,11 +357,7 @@ export default function NaturesMirrorGame() {
   }, [currentLevel]);
 
   // Draw on canvas
-  useEffect(() => {
-    drawCanvas();
-  }, [currentQuestion, selectedOption, showAnswer]);
-
-  const drawCanvas = () => {
+  const drawCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     
@@ -434,7 +430,11 @@ export default function NaturesMirrorGame() {
         });
       }
     }
-  };
+  }, [currentQuestion, selectedOption, showAnswer]);
+
+  useEffect(() => {
+    drawCanvas();
+  }, [drawCanvas]);
 
   const drawPoint = (ctx: CanvasRenderingContext2D, x: number, y: number, color: string, size: number, isWrong = false) => {
     ctx.fillStyle = color;

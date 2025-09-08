@@ -156,6 +156,7 @@ export default function MaterialMixUpGame() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const [selectedBin, setSelectedBin] = useState<string>('');
+  const [clickedBins, setClickedBins] = useState<{[key: string]: 'correct' | 'incorrect'}>({});
   const [completedMaterials, setCompletedMaterials] = useState<string[]>([]);
   
   // Enhanced interaction states
@@ -171,10 +172,19 @@ export default function MaterialMixUpGame() {
 
   // Handle property bin selection
   const handleBinClick = (binId: string) => {
+    // Don't allow clicking if this bin has already been clicked
+    if (clickedBins[binId]) return;
+    
     setSelectedBin(binId);
     setUserActions(prev => prev + 1);
     
     const correct = currentMaterial.properties.includes(binId);
+    
+    // Mark this bin as clicked with its result
+    setClickedBins(prev => ({
+      ...prev,
+      [binId]: correct ? 'correct' : 'incorrect'
+    }));
     
     if (correct) {
       setScore(prev => prev + 10);
@@ -190,7 +200,7 @@ export default function MaterialMixUpGame() {
       setShowError(true);
     }
     
-    // Auto-hide feedback after 2 seconds
+    // Auto-hide feedback after 2 seconds but keep the bin marked
     setTimeout(() => {
       setShowSuccess(false);
       setShowError(false);
@@ -242,6 +252,7 @@ export default function MaterialMixUpGame() {
     setMaterialIndex(nextIndex);
     setCurrentMaterial(MATERIALS[nextIndex]);
     setSelectedBin('');
+    setClickedBins({}); // Reset clicked bins for new material
     
     // Don't show AI suggestions when user clicks next material
     // Just move to the next material without suggestions
@@ -313,8 +324,8 @@ export default function MaterialMixUpGame() {
     if (!showFactModal) return null;
     
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl animate-scale-in border border-gray-200">
+      <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-md flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl animate-scale-in border border-gray-200 ring-1 ring-gray-300">
           <div className="text-center mb-4">
             <div className="text-4xl mb-2">💡</div>
             <h3 className="text-lg font-bold text-gray-800">Did You Know?</h3>
@@ -371,22 +382,18 @@ export default function MaterialMixUpGame() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-100 to-blue-100 font-sans">
-      {/* Main Game Content */}
-      <div className={`${showAISuggestions || showFactModal ? 'filter blur-sm' : ''}`}>
-        {/* Header */}
-        <div className="bg-white shadow-sm">
-          <div className="flex items-center justify-between p-4">
-            <Link href="https://eklavyaa.vercel.app/chapters/science-world" className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-2xl">
+    <>
+      <div className="min-h-screen bg-gradient-to-br from-sky-100 to-blue-100 font-sans">
+        {/* Main Game Content */}
+        <div className={`${showAISuggestions || showFactModal ? 'filter blur-sm' : ''}`}>
+          {/* Header */}
+          <div className="bg-white shadow-sm">
+            <div className="flex items-center justify-between p-4">
+              <Link href="https://eklavyaa.vercel.app/chapters/science-world" className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-2xl">
               ←
             </Link>
             <h1 className="text-xl font-semibold text-gray-800">Material Mix-Up 🔬</h1>
-            <button 
-              onClick={() => setShowAISuggestions(true)}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-xl"
-            >
-              🤖
-            </button>
+            <div className="p-2"></div>
           </div>
           
           {/* Progress Bar */}
@@ -428,7 +435,7 @@ export default function MaterialMixUpGame() {
               <div className="text-lg font-bold text-gray-700 mb-2">
                 {currentMaterial.name}
               </div>
-              <p className="text-gray-600 text-sm">Drag to the correct property bins!</p>
+              <p className="text-gray-600 text-sm">Click on the correct property!</p>
             </div>
           </div>
         </div>
@@ -437,24 +444,32 @@ export default function MaterialMixUpGame() {
         <div className="px-6 mb-8">
           <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">Material Properties</h3>
           <div className="grid grid-cols-2 gap-4">
-            {PROPERTY_BINS.map((bin) => (
-              <button
-                key={bin.id}
-                onClick={() => handleBinClick(bin.id)}
-                className={`p-4 rounded-xl border-3 shadow-soft transition-all hover:scale-105 ${
-                  selectedBin === bin.id 
-                    ? (currentMaterial.properties.includes(bin.id) 
-                      ? 'border-green-400 bg-green-50' 
-                      : 'border-red-400 bg-red-50')
-                    : 'border-white'
-                }`}
-                style={{ backgroundColor: bin.color }}
-              >
-                <div className="text-4xl mb-2">{bin.emoji}</div>
-                <div className="text-lg font-bold text-gray-700 mb-1">{bin.name}</div>
-                <div className="text-sm text-gray-600">{bin.description}</div>
-              </button>
-            ))}
+            {PROPERTY_BINS.map((bin) => {
+              const isClicked = clickedBins[bin.id];
+              const isDisabled = !!isClicked;
+              
+              return (
+                <button
+                  key={bin.id}
+                  onClick={() => handleBinClick(bin.id)}
+                  disabled={isDisabled}
+                  className={`p-4 rounded-xl border-3 shadow-soft transition-all ${
+                    !isDisabled ? 'hover:scale-105 cursor-pointer' : 'cursor-not-allowed opacity-90'
+                  } ${
+                    isClicked === 'correct'
+                      ? 'border-green-400 bg-green-50'
+                      : isClicked === 'incorrect'
+                      ? 'border-red-400 bg-red-50'
+                      : 'border-white'
+                  }`}
+                  style={{ backgroundColor: bin.color }}
+                >
+                  <div className="text-4xl mb-2">{bin.emoji}</div>
+                  <div className="text-lg font-bold text-gray-700 mb-1">{bin.name}</div>
+                  <div className="text-sm text-gray-600">{bin.description}</div>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -495,14 +510,6 @@ export default function MaterialMixUpGame() {
               Next Material ➡️
             </button>
           </div>
-          
-          {/* AI Suggestions Button */}
-          <button
-            onClick={() => setShowAISuggestions(true)}
-            className="w-full mt-4 py-3 px-6 rounded-xl font-medium text-base bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600 text-white shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300"
-          >
-            🤖 Get AI Learning Suggestions
-          </button>
         </div>
 
         {/* Educational Hint */}
@@ -519,6 +526,7 @@ export default function MaterialMixUpGame() {
             </div>
           </div>
         </div>
+      </div>
       </div>
 
       {/* AI Suggestions Modal */}
@@ -544,6 +552,6 @@ export default function MaterialMixUpGame() {
           }
         }
       `}</style>
-    </div>
+    </>
   );
 }

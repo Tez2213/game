@@ -191,6 +191,27 @@ const TemperatureMaster: React.FC = () => {
       ctx.fillText(`${temp}°C`, centerX + thermometerWidth/2 + 15, y + 3);
     });
 
+    // Draw current temperature indicator line to show exact position
+    if (!showResult) {
+      const currentTempY = startY + thermometerHeight - ((userTemp - minTemp) / tempRange) * thermometerHeight;
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([3, 3]);
+      
+      ctx.beginPath();
+      ctx.moveTo(centerX - thermometerWidth/2 - 10, currentTempY);
+      ctx.lineTo(centerX + thermometerWidth/2 + 10, currentTempY);
+      ctx.stroke();
+      
+      ctx.setLineDash([]);
+      
+      // Current temperature label
+      ctx.fillStyle = '#ef4444';
+      ctx.font = 'bold 10px Arial';
+      ctx.textAlign = 'right';
+      ctx.fillText(`${userTemp}°C`, centerX - thermometerWidth/2 - 12, currentTempY + 3);
+    }
+
     // Draw current temperature display - larger for mobile
     ctx.fillStyle = '#1f2937';
     ctx.font = 'bold 20px Arial';

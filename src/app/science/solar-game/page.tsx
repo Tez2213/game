@@ -173,7 +173,7 @@ function Planet({ planetData, isInOrbit, angle = 0, onClick, isClickable = true,
       <span className="text-white text-xs font-bold">
         {planetData.name === 'Earth' && '🌍'}
         {planetData.name === 'Mars' && '🔴'}
-        {planetData.name === 'Jupiter' && '🪐'}
+        {planetData.name === 'Jupiter' && '♃'}
         {planetData.name === 'Saturn' && '🪐'}
       </span>
     </div>
@@ -498,8 +498,11 @@ export default function SolarSystemExplorer() {
 
       {/* Planet Information Modal */}
       {showPlanetInfo && selectedPlanetInfo && (
-        <div className="absolute inset-0 bg-black bg-opacity-80 flex items-center justify-center z-40 p-4">
-          <div className="bg-white rounded-xl p-6 max-w-sm max-h-[80vh] overflow-y-auto shadow-2xl">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }}
+        >
+          <div className="bg-white rounded-xl p-6 max-w-sm max-h-[80vh] overflow-y-auto shadow-2xl ring-1 ring-gray-300">
             <div className="text-center mb-4">
               <div 
                 className="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center border-4 border-gray-300"
@@ -508,7 +511,7 @@ export default function SolarSystemExplorer() {
                 <span className="text-white text-2xl">
                   {selectedPlanetInfo.name === 'Earth' && '🌍'}
                   {selectedPlanetInfo.name === 'Mars' && '🔴'}
-                  {selectedPlanetInfo.name === 'Jupiter' && '🪐'}
+                  {selectedPlanetInfo.name === 'Jupiter' && '♃'}
                   {selectedPlanetInfo.name === 'Saturn' && '🪐'}
                 </span>
               </div>
@@ -553,23 +556,6 @@ export default function SolarSystemExplorer() {
                 ))}
               </div>
             </div>
-
-            {showAIsuggestions && (
-              <div className="mb-4 p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200">
-                <h4 className="font-bold text-purple-800 mb-2">🤖 AI Suggestions:</h4>
-                <div className="space-y-2">
-                  {getAISuggestions(selectedPlanetInfo).map((suggestion, index) => (
-                    <button
-                      key={index}
-                      onClick={() => addUserInterest(suggestion)}
-                      className="block w-full text-left text-sm text-purple-700 hover:text-purple-900 hover:bg-purple-100 p-2 rounded transition-colors"
-                    >
-                      {suggestion}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {userInterests.length > 0 && (
               <div className="mb-4 p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
@@ -675,7 +661,7 @@ export default function SolarSystemExplorer() {
                   <span className="text-white text-sm">
                     {planet.name === 'Earth' && '🌍'}
                     {planet.name === 'Mars' && '🔴'}
-                    {planet.name === 'Jupiter' && '🪐'}
+                    {planet.name === 'Jupiter' && '♃'}
                     {planet.name === 'Saturn' && '🪐'}
                   </span>
                 </div>
@@ -688,9 +674,6 @@ export default function SolarSystemExplorer() {
               <p className="text-blue-200 text-xs font-medium">
                 🎯 Tap planets in order from closest to Sun!
               </p>
-              <p className="text-blue-300 text-xs mt-1">
-                Next: <strong>{planetsData[placedPlanets.length]?.name || 'Complete!'}</strong>
-              </p>
               <p className="text-yellow-200 text-xs mt-1">
                 💡 Click orbiting planets to learn more!
               </p>
@@ -701,15 +684,15 @@ export default function SolarSystemExplorer() {
 
       {/* Progress indicator - Mobile optimized */}
       <div className="absolute top-24 left-2 z-10">
-        <div className="bg-gray-900 bg-opacity-95 rounded-xl p-3 border border-gray-600 shadow-xl">
-          <div className="text-white text-xs font-bold mb-2 flex items-center gap-1">
+        <div className="bg-gray-900 bg-opacity-95 rounded-lg p-2 border border-gray-600 shadow-xl">
+          <div className="text-white text-xs font-bold mb-1 flex items-center gap-1">
             📊 Progress
           </div>
           <div className="flex gap-1 mb-1">
             {planetsData.map((planet, index) => (
               <div
                 key={index}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
                   index < placedPlanets.length 
                     ? 'bg-green-500 shadow-lg' 
                     : index === placedPlanets.length 

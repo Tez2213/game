@@ -27,7 +27,7 @@ const WATER_CYCLE_STAGES: WaterCycleStage[] = [
   {
     id: 'evaporation',
     name: 'Evaporation',
-    emoji: '☀️💧',
+    emoji: '☀️',
     description: 'The Sun heats water in lakes, rivers, and oceans, turning it into invisible water vapor that rises into the air.',
     fact: 'The Sun provides the energy needed to change liquid water into water vapor. This happens every day all around the world!',
     scientificFact: 'Evaporation occurs when water molecules gain enough energy from heat to break free from the liquid and become gas molecules.',
@@ -37,7 +37,7 @@ const WATER_CYCLE_STAGES: WaterCycleStage[] = [
   {
     id: 'condensation',
     name: 'Condensation',
-    emoji: '☁️💨',
+    emoji: '☁️',
     description: 'Water vapor rises high into the sky where it cools down and forms tiny droplets that create clouds.',
     fact: 'Clouds are made of billions of tiny water droplets floating in the air, so small you could fit thousands on your fingertip!',
     scientificFact: 'As water vapor rises, it cools and condenses around tiny particles of dust or pollen in the atmosphere, forming cloud droplets.',
@@ -47,7 +47,7 @@ const WATER_CYCLE_STAGES: WaterCycleStage[] = [
   {
     id: 'precipitation',
     name: 'Precipitation',
-    emoji: '🌧️⛈️',
+    emoji: '🌧️',
     description: 'When cloud droplets become too heavy, they fall as rain, snow, or hail back to Earth.',
     fact: 'Precipitation can be rain, snow, sleet, or hail depending on the temperature as water falls through the air!',
     scientificFact: 'Precipitation occurs when cloud droplets collide and merge until they become too heavy to stay suspended in the air.',
@@ -169,7 +169,14 @@ export default function WaterCycleGame() {
           setCurrentStage(prev => prev + 1);
         }, 2000);
       } else {
-        setGameCompleted(true);
+        // For precipitation (last stage), wait for rain animation to complete
+        if (currentStageData.id === 'precipitation') {
+          setTimeout(() => {
+            setGameCompleted(true);
+          }, 3500); // Wait for rain animation (3000ms) + extra buffer
+        } else {
+          setGameCompleted(true);
+        }
       }
     } else {
       setShowError(true);
@@ -362,13 +369,8 @@ export default function WaterCycleGame() {
             <Link href="https://eklavyaa.vercel.app/chapters/science-world" className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-2xl">
               ←
             </Link>
-            <h1 className="text-xl font-semibold text-gray-800">Water Cycle Adventure 💧</h1>
-            <button 
-              onClick={() => setShowAISuggestions(true)}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-xl"
-            >
-              🤖
-            </button>
+            <h1 className="text-xl font-semibold text-gray-800">Water Cycle Adventure</h1>
+            <div className="w-10"></div>
           </div>
           
           {/* Progress Bar */}
@@ -602,15 +604,6 @@ export default function WaterCycleGame() {
                   )}
                 </div>
               </div>
-
-              {/* Animated Stage Transitions */}
-              {stages[currentStage]?.completed && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="text-6xl animate-celebration-burst">
-                    {stages[currentStage]?.emoji}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         )}
@@ -618,7 +611,7 @@ export default function WaterCycleGame() {
         {/* Drag Items */}
         {!gameCompleted && (
           <div className="px-6 mb-8">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center animate-fade-in">Drag to the Correct Zone</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center animate-fade-in">Click on the Correct Zone</h3>
             <div className="flex justify-center space-x-4">
               {DRAG_ITEMS.map((item, index) => (
                 <button
@@ -692,14 +685,6 @@ export default function WaterCycleGame() {
                 🔄 Reset
               </button>
             </div>
-            
-            {/* AI Suggestions Button */}
-            <button
-              onClick={() => setShowAISuggestions(true)}
-              className="w-full mt-4 py-3 px-6 rounded-xl font-medium text-base bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600 text-white shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300"
-            >
-              🤖 Get AI Learning Suggestions
-            </button>
           </div>
         )}
 

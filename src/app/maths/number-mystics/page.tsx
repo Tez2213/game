@@ -426,7 +426,8 @@ export default function NumberMysticsGame() {
       timerRef.current = setTimeout(() => {
         setTimeLeft(prev => prev - 1);
       }, 1000);
-    } else if (timeLeft === 0 && gameStarted && !showResult) {
+    } else if (timeLeft === 0 && gameStarted && !showResult && grid.length > 0) {
+      // Only trigger time up if the game has actually started and grid is loaded
       handleTimeUp();
     }
     
@@ -435,7 +436,7 @@ export default function NumberMysticsGame() {
         clearTimeout(timerRef.current);
       }
     };
-  }, [timeLeft, gameStarted, showResult]);
+  }, [timeLeft, gameStarted, showResult, grid.length]);
   
   // Enhanced game start
   const startGame = useCallback(() => {
@@ -729,15 +730,7 @@ export default function NumberMysticsGame() {
                 </div>
               )}
             </div>
-            <button 
-              onClick={() => setShowAISuggestions(true)}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-lg relative"
-            >
-              🤖
-              {aiSuggestions.length > 0 && (
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-              )}
-            </button>
+            <div className="w-10"></div>
           </div>
           
           {/* Enhanced Game Stats */}
@@ -962,8 +955,8 @@ export default function NumberMysticsGame() {
 
       {/* Enhanced Hint Modal */}
       {showHint && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2">
-          <div className="bg-white rounded-lg w-full max-w-sm mx-auto p-3 shadow-2xl animate-slideIn">
+        <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm flex items-center justify-center z-50 p-2">
+          <div className="bg-white rounded-lg w-full max-w-sm mx-auto p-3 shadow-2xl animate-slideIn border border-gray-200">
             <div className="text-center mb-3">
               <div className="text-2xl mb-2">💡</div>
               <h3 className="text-sm font-bold text-gray-800">Quick Mystic Hint</h3>
@@ -998,8 +991,8 @@ export default function NumberMysticsGame() {
 
       {/* Enhanced Detailed Hint Modal */}
       {showDetailedHint && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2">
-          <div className="bg-white rounded-lg w-full max-w-sm mx-auto p-3 shadow-2xl animate-slideIn max-h-[85vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm flex items-center justify-center z-50 p-2">
+          <div className="bg-white rounded-lg w-full max-w-sm mx-auto p-3 shadow-2xl animate-slideIn max-h-[85vh] overflow-y-auto border border-gray-200">
             <div className="text-center mb-3">
               <div className="text-2xl mb-2">🎯</div>
               <h3 className="text-sm font-bold text-gray-800">Detailed Mystic Guide</h3>
@@ -1044,8 +1037,8 @@ export default function NumberMysticsGame() {
 
       {/* Enhanced Educational Facts Modal */}
       {showFacts && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2">
-          <div className="bg-white rounded-lg w-full max-w-sm mx-auto p-3 shadow-2xl max-h-[85vh] overflow-y-auto animate-slideIn">
+        <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm flex items-center justify-center z-50 p-2">
+          <div className="bg-white rounded-lg w-full max-w-sm mx-auto p-3 shadow-2xl max-h-[85vh] overflow-y-auto animate-slideIn border border-gray-200">
             <div className="text-center mb-3">
               <div className="text-2xl mb-2">📚</div>
               <h3 className="text-sm font-bold text-gray-800">Number Magic Encyclopedia</h3>
@@ -1101,8 +1094,8 @@ export default function NumberMysticsGame() {
 
       {/* Enhanced AI Suggestions Modal */}
       {showAISuggestions && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2">
-          <div className="bg-white rounded-lg w-full max-w-sm mx-auto p-3 shadow-2xl max-h-[85vh] overflow-y-auto animate-slideIn">
+        <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm flex items-center justify-center z-50 p-2">
+          <div className="bg-white rounded-lg w-full max-w-sm mx-auto p-3 shadow-2xl max-h-[85vh] overflow-y-auto animate-slideIn border border-gray-200">
             <div className="text-center mb-3">
               <div className="text-2xl mb-2">🤖</div>
               <h3 className="text-sm font-bold text-gray-800">AI Mystic Learning Guide</h3>
@@ -1176,9 +1169,9 @@ export default function NumberMysticsGame() {
 
       {/* Enhanced Result Modal */}
       {showResult && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2">
-          <div className={`bg-white rounded-lg p-4 w-full max-w-sm mx-auto text-center shadow-2xl animate-slideIn ${
-            isCorrectAnswer ? 'border-4 border-green-500' : 'border-4 border-orange-500'
+        <div className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm flex items-center justify-center z-50 p-2">
+          <div className={`bg-white rounded-lg p-4 w-full max-w-sm mx-auto text-center shadow-2xl animate-slideIn border-4 ${
+            isCorrectAnswer ? 'border-green-500' : 'border-orange-500'
           }`}>
             <div className={`text-3xl mb-3 ${isCorrectAnswer ? 'animate-bounce' : 'animate-pulse'}`}>
               {isCorrectAnswer ? '🌟' : '🔮'}

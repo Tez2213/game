@@ -302,7 +302,7 @@ const AISuggestionsModal: React.FC<{
         <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="text-lg font-bold">🤖 AI Learning Suggestions</h3>
+              <h3 className="text-lg font-bold"> AI Learning Suggestions</h3>
               <p className="text-purple-100 text-sm">Explore more about {animal.name}!</p>
             </div>
             <button
@@ -447,7 +447,7 @@ const QuestionTrackingModal: React.FC<{
         <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white p-4">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="text-lg font-bold">🤓 Learning Time!</h3>
+              <h3 className="text-lg font-bold"> Learning Time!</h3>
               <p className="text-green-100 text-sm">You asked about {animal.name}</p>
             </div>
             <button
@@ -474,7 +474,7 @@ const QuestionTrackingModal: React.FC<{
         <div className="p-4">
           {!showAnswer ? (
             <div className="text-center space-y-4">
-              <div className="text-4xl">🧠</div>
+              <div className="text-4xl"></div>
               <p className="text-gray-600 text-sm">
                 Ready to learn something amazing about {animal.name}?
               </p>
@@ -482,7 +482,7 @@ const QuestionTrackingModal: React.FC<{
                 onClick={() => setShowAnswer(true)}
                 className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-6 py-3 rounded-lg font-medium hover:from-green-600 hover:to-blue-600 transition-colors"
               >
-                Show Answer! 🎉
+                Show Answer! 
               </button>
             </div>
           ) : (
@@ -497,7 +497,7 @@ const QuestionTrackingModal: React.FC<{
 
               {/* Learning Actions */}
               <div className="bg-gray-50 p-3 rounded-lg space-y-3">
-                <h4 className="font-semibold text-gray-800 text-sm">🌟 Great job learning!</h4>
+                <h4 className="font-semibold text-gray-800 text-sm"> Great job learning!</h4>
                 <div className="flex gap-2">
                   <button
                     onClick={() => {
@@ -506,13 +506,13 @@ const QuestionTrackingModal: React.FC<{
                     }}
                     className="flex-1 bg-green-500 text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-green-600 transition-colors"
                   >
-                    ✓ I Learned This!
+                     I Learned This!
                   </button>
                   <button
                     onClick={onClose}
                     className="flex-1 bg-blue-500 text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors"
                   >
-                    🤔 Ask More
+                     Ask More
                   </button>
                 </div>
               </div>
@@ -537,10 +537,10 @@ const EnhancedFactModal: React.FC<{
   if (!show) return null;
 
   const tabs = [
-    { id: 'general', label: '🧠 General', icon: '📖' },
+    { id: 'general', label: ' General', icon: '📖' },
     { id: 'habitat', label: '🏠 Habitat', icon: '🌍' },
-    { id: 'digestion', label: '🍽️ Digestion', icon: '⚡' },
-    { id: 'related', label: '👨‍👩‍👧‍👦 Family', icon: '🦴' }
+    { id: 'digestion', label: ' Digestion', icon: '⚡' },
+    { id: 'related', label: '👨‍👩‍👧 Family', icon: '🦴' }
   ];
 
   const handleQuestionClick = (question: string) => {
@@ -557,7 +557,7 @@ const EnhancedFactModal: React.FC<{
               <strong>Fun Fact:</strong> {animal.fact}
             </p>
             <div className="bg-blue-50 p-3 rounded-lg">
-              <h4 className="font-semibold text-blue-800 mb-2">🤔 Quick Questions:</h4>
+              <h4 className="font-semibold text-blue-800 mb-2"> Quick Questions:</h4>
               <div className="space-y-2">
                 {[
                   `Why does ${animal.name} eat ${animal.preferredTypes[0]}?`,
@@ -611,7 +611,7 @@ const EnhancedFactModal: React.FC<{
               <strong>Digestive System:</strong> {animal.digestiveSystem}
             </p>
             <div className="bg-orange-50 p-3 rounded-lg">
-              <h4 className="font-semibold text-orange-800 mb-2">🍽️ Digestion Questions:</h4>
+              <h4 className="font-semibold text-orange-800 mb-2"> Digestion Questions:</h4>
               <div className="space-y-2">
                 {[
                   `How does ${animal.name} digest food?`,
@@ -638,7 +638,7 @@ const EnhancedFactModal: React.FC<{
               <strong>Related Animals:</strong> {animal.relatedAnimals?.join(', ') || 'None specified'}
             </p>
             <div className="bg-purple-50 p-3 rounded-lg">
-              <h4 className="font-semibold text-purple-800 mb-2">👨‍👩‍👧‍👦 Family Questions:</h4>
+              <h4 className="font-semibold text-purple-800 mb-2"> Family Questions:</h4>
               <div className="space-y-2">
                 {[
                   `What animals are related to ${animal.name}?`,
@@ -670,7 +670,7 @@ const EnhancedFactModal: React.FC<{
         <div className="bg-gradient-to-r from-sky-400 to-blue-500 text-white p-4">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="text-lg font-bold">🧠 Learn About {animal.name}</h3>
+              <h3 className="text-lg font-bold"> Learn About {animal.name}</h3>
               <p className="text-sky-100 text-sm">Explore different topics!</p>
             </div>
             <button
@@ -749,7 +749,7 @@ const SuccessModal: React.FC<{
     <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl p-6 text-center shadow-2xl transform success-modal max-w-sm w-full max-h-[80vh] overflow-y-auto animate-scale-in border border-gray-300">
         <div className="text-6xl mb-4 animate-bounce-gentle">
-          {isCorrect ? '😊' : '😅'}
+          {isCorrect ? '👍' : '😅'}
         </div>
         <h2 className="text-xl font-semibold text-gray-800 mb-4">
           {isCorrect ? 'Congratulations!' : 'Good try!'}
@@ -761,7 +761,7 @@ const SuccessModal: React.FC<{
         {isCorrect && (
           <div className="space-y-4 mb-6">
             {/* Quick Topics */}
-            <div>
+            {/* <div>
               <h4 className="font-semibold text-gray-700 mb-2">🧠 Want to learn more about:</h4>
               <div className="flex flex-wrap gap-2 justify-center">
                 {['Digestive System', 'Habitat', 'Related Animals'].map((topic) => (
@@ -774,7 +774,7 @@ const SuccessModal: React.FC<{
                   </button>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             {/* Action Buttons */}
             <div className="flex gap-2">
@@ -782,7 +782,7 @@ const SuccessModal: React.FC<{
                 onClick={onShowFact}
                 className="flex-1 bg-green-100 text-green-800 py-2 px-4 rounded-lg font-medium text-sm hover:bg-green-200 transition-colors"
               >
-                🧠 Fun Fact
+                 Fun Facts
               </button>
               <button
                 onClick={onNext}
@@ -942,7 +942,7 @@ export default function EnergyChefGame() {
             <Link href="https://eklavyaa.vercel.app/chapters/science-world" className="p-2 rounded-lg hover:bg-beige transition-colors text-2xl">
               ←
             </Link>
-            <h1 className="text-xl font-semibold text-gray-800">Energy Chef 🧑‍🍳</h1>
+            <h1 className="text-xl font-semibold text-gray-800">Energy Chef </h1>
             <div className="w-10"></div>
           </div>
         
@@ -950,13 +950,13 @@ export default function EnergyChefGame() {
           <div className="px-4 pb-3 bg-gradient-to-r from-sky-50 to-blue-50">
             <div className="flex justify-between items-center text-sm">
               <div className="flex items-center gap-2">
-                <span className="text-gray-600">🎯 Progress:</span>
+                <span className="text-gray-600"> Progress:</span>
                 <div className="bg-white rounded-full px-2 py-1 text-blue-600 font-medium">
                   {completedAnimals.length}/{ANIMALS.length} animals
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-gray-600">🤔 Questions:</span>
+                <span className="text-gray-600"> Questions:</span>
                 <div className="bg-white rounded-full px-2 py-1 text-purple-600 font-medium">
                   {userQuestions.length}
                 </div>
@@ -992,7 +992,7 @@ export default function EnergyChefGame() {
         {/* Cooking Pot */}
         <div className="px-6 mb-8">
           <div className={`bg-white rounded-2xl p-8 text-center shadow-lift min-h-32 border-4 border-dashed border-taupe transition-all cooking-pot ${isAnimating ? 'cooking' : ''}`}>
-            <div className="text-4xl mb-4">🍲</div>
+            <div className="text-4xl mb-4"></div>
             {isAnimating && (
               <div className="text-sm text-gray-600 mb-2 animate-pulse">Preparing the food...</div>
             )}
@@ -1045,10 +1045,10 @@ export default function EnergyChefGame() {
                     e.stopPropagation();
                     setShowIngredientFact(ingredient.name);
                   }}
-                  className="absolute -top-1 -right-1 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-blue-600 transition-colors shadow-md"
+                  className="absolute -top-1 -right-1 bg-gray-400 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-gray-500 transition-colors shadow-sm"
                   title="Learn about this ingredient"
                 >
-                  💡
+                  i
                 </button>
               </div>
             ))}
@@ -1070,7 +1070,7 @@ export default function EnergyChefGame() {
               disabled={cookingPot.length === 0 || isAnimating}
               className="flex-1 bg-gradient-to-r from-mint to-green-300 text-gray-800 py-4 rounded-xl font-medium hover:scale-105 transition-transform shadow-soft disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
-              {isAnimating ? 'Feeding...' : 'Feed Animal 🍽️'}
+              {isAnimating ? 'Feeding...' : 'Feed Animal '}
             </button>
           </div>
         </div>
@@ -1137,7 +1137,7 @@ export default function EnergyChefGame() {
         <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-2xl animate-scale-in border border-gray-300">
             <h3 className="text-lg font-bold text-gray-800 mb-3">
-              🧠 {INGREDIENTS.find(i => i.name === showIngredientFact)?.name} Facts
+               {INGREDIENTS.find(i => i.name === showIngredientFact)?.name} Facts
             </h3>
             <p className="text-gray-600 text-sm mb-4 leading-relaxed">
               {INGREDIENTS.find(i => i.name === showIngredientFact)?.fact}
@@ -1149,7 +1149,7 @@ export default function EnergyChefGame() {
               onClick={() => setShowIngredientFact(null)}
               className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-600 transition-colors"
             >
-              Got it! 👍
+              Got it! 
             </button>
           </div>
         </div>

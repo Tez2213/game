@@ -937,12 +937,12 @@ export default function EnergyChefGame() {
       {/* Main Game Content - This gets blurred when modal is open */}
       <div className={`transition-all duration-500 ${isAnyModalOpen ? 'filter blur-md brightness-75' : ''}`}>
         {/* Header */}
-        <div className="bg-white shadow-sm">
+        <div className="bg-white shadow-sm sticky top-0 z-50">
           <div className="flex items-center justify-between p-4">
             <Link href="https://eklavyaa.vercel.app/chapters/science-world" className="p-2 rounded-lg hover:bg-beige transition-colors text-2xl">
               ←
             </Link>
-            <h1 className="text-xl font-semibold text-gray-800">Energy Chef </h1>
+            <h1 className="text-xl font-semibold text-gray-800">Energy Chef 🧑‍🍳</h1>
             <div className="w-10"></div>
           </div>
         
@@ -950,13 +950,13 @@ export default function EnergyChefGame() {
           <div className="px-4 pb-3 bg-gradient-to-r from-sky-50 to-blue-50">
             <div className="flex justify-between items-center text-sm">
               <div className="flex items-center gap-2">
-                <span className="text-gray-600"> Progress:</span>
+                <span className="text-gray-600">🎯 Progress:</span>
                 <div className="bg-white rounded-full px-2 py-1 text-blue-600 font-medium">
                   {completedAnimals.length}/{ANIMALS.length} animals
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-gray-600"> Questions:</span>
+                <span className="text-gray-600">❓ Questions:</span>
                 <div className="bg-white rounded-full px-2 py-1 text-purple-600 font-medium">
                   {userQuestions.length}
                 </div>

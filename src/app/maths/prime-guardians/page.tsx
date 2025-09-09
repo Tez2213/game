@@ -187,6 +187,7 @@ export default function PrimeGuardians() {
   const resetGame = () => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
+      timerRef.current = null;
     }
     
     setGameState({
@@ -209,6 +210,12 @@ export default function PrimeGuardians() {
     return 'text-red-500 animate-pulse';
   };
 
+  const getTimerColorLight = () => {
+    if (gameState.timeLeft > 10) return 'text-green-600';
+    if (gameState.timeLeft > 5) return 'text-orange-500';
+    return 'text-red-500';
+  };
+
   useEffect(() => {
     return () => {
       if (timerRef.current) {
@@ -218,266 +225,334 @@ export default function PrimeGuardians() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-4 sm:p-6">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 font-sans relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-cyan-500/10 rounded-full blur-2xl animate-pulse delay-500"></div>
+      </div>
+      
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
-        <div className="flex flex-col items-center text-center mb-8 sm:mb-12 gap-6">
-          <div className="flex items-center justify-between w-full">
+        <div className="bg-black/20 backdrop-blur-xl shadow-2xl sticky top-0 z-50 border-b border-purple-500/20">
+          <div className="flex items-center justify-between p-4">
             <Link
               href="https://eklavyaa.vercel.app/chapters/maths-world"
-              className="flex items-center space-x-2 sm:space-x-3 backdrop-blur-sm px-4 sm:px-6 py-3 sm:py-4 rounded-xl transition-all duration-200 text-sm sm:text-base text-white hover:bg-white/20"
+              className="p-3 rounded-xl bg-gradient-to-r from-purple-600/20 to-blue-600/20 hover:from-purple-600/40 hover:to-blue-600/40 backdrop-blur-sm transition-all duration-300 text-2xl text-white hover:text-purple-200 hover:scale-110 border border-purple-500/30"
             >
-              <span>←</span>
-              <span className="hidden sm:inline">Back to Maths World</span>
-              <span className="sm:hidden">Back</span>
+              ←
             </Link>
-            <div className="flex-1"></div>
-          </div>
+            <div className="flex items-center gap-4">
+              <h1 className="text-3xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent drop-shadow-lg">
+                PRIME GUARDIANS
+              </h1>
+            </div>
+            <div className="w-10"></div>
+          </div>  
+        </div>
+
+        {/* Game Content */}
+        <div className="p-4 sm:p-6">
           
-          <div className="bg-white/10 backdrop-blur-sm px-6 sm:px-8 py-3 sm:py-4 rounded-xl border border-white/20">
-            <h1 className="text-4xl sm:text-6xl font-bold text-white"> Prime Guardians</h1>
-          </div>
-        </div>
-
-        {/* How to Play Button */}
-        <div className="text-center mb-10 sm:mb-16">
-          <button
-            onClick={() => setGameState(prev => ({ ...prev, showVideoModal: true }))}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-10 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg transform hover:scale-105 active:scale-95 transition-all touch-manipulation border border-white/20"
-          >
-             See How to Play
-          </button>
-        </div>
-
-        {/* Game Stats During Battle */}
-        {gameState.currentEnemy && (
-          <div className="flex items-center justify-center space-x-8 sm:space-x-12 text-white mb-6 sm:mb-8">
-            <div className="text-center">
-              <div className="text-xl sm:text-2xl font-bold">Wave {gameState.wave}</div>
-              <div className="text-sm sm:text-base opacity-75 mt-1">Current</div>
-            </div>
-            <div className="text-center">
-              <div className="text-xl sm:text-2xl font-bold text-red-400">❤️ {gameState.lives}</div>
-              <div className="text-sm sm:text-base opacity-75 mt-1">Lives</div>
-            </div>
-          </div>
-        )}
-
-        {/* Timer Display */}
-        {gameState.currentEnemy && (
-          <div className="text-center mb-10 sm:mb-12">
-            <div className={`text-4xl sm:text-6xl font-bold ${getTimerColor()} flex items-center justify-center gap-3 sm:gap-4`}>
-              <svg className="w-10 h-10 sm:w-16 sm:h-16" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z"/>
-                <path d="M12.5 7H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
-              </svg>
-              {gameState.timeLeft}
-            </div>
-            <div className="text-white opacity-75 text-base sm:text-lg mt-2">seconds remaining</div>
-          </div>
-        )}
-
-        {/* Game Arena */}
-        <div className="relative bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 rounded-3xl p-2 mb-10 sm:mb-16">
-          <div className="bg-gray-900 rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-center min-h-[280px] sm:min-h-[350px]">
-            
-            {/* Enemy Zone */}
-            <div className="w-full sm:flex-1 bg-red-500/20 rounded-2xl p-6 sm:p-8 mb-6 sm:mb-0 sm:mr-6 border-2 border-red-500">
-              <h3 className="text-red-400 font-bold text-xl sm:text-2xl mb-4 sm:mb-6 text-center"> ENEMY ZONE</h3>
-              <div className="flex items-center justify-center h-20 sm:h-32">
-                {gameState.currentEnemy ? (
-                  <div className="text-center">
-                    <div className="text-3xl sm:text-6xl font-bold text-red-400 mb-1 sm:mb-2">
-                      {gameState.currentEnemy.number}
-                    </div>
-                    <div className="text-red-300 text-xs sm:text-base">Composite Number</div>
-                  </div>
-                ) : (
-                  <div className="text-red-300 text-sm sm:text-xl opacity-50 text-center px-2">
-                    Enemy will appear here
-                  </div>
-                )}
+          {/* Welcome Message - Only show when no enemy and not game over */}
+          {!gameState.currentEnemy && !gameState.gameOver && !gameState.showPopup && (
+            <div className="text-center mb-8">
+              <div className="bg-black/30 backdrop-blur-xl rounded-3xl shadow-2xl p-10 mb-8 border border-purple-500/30 hover:border-purple-400/50 transition-all duration-500 shadow-purple-500/20">
+                <h2 className="text-4xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent mb-6 tracking-wider">
+                  WELCOME TO PRIME GUARDIANS
+                </h2>
+                <p className="text-purple-100 text-xl mb-3 leading-relaxed font-medium">
+                  Break down composite numbers into their prime factors to defend yourself.
+                </p>
+                <p className="text-purple-200 text-xl mb-8 leading-relaxed font-medium">
+                  Click on prime numbers to place them, then hit defend to check your answer!
+                </p>
               </div>
-            </div>
 
-            {/* VS Separator */}
-            <div className="flex flex-row sm:flex-col items-center px-4 sm:px-6 my-4 sm:my-0">
-              <div className="h-2 w-12 sm:w-2 sm:h-20 bg-yellow-400 mr-3 sm:mr-0 sm:mb-3 rounded-full"></div>
-              <div className="text-3xl sm:text-5xl font-bold text-yellow-400 animate-pulse">VS</div>
-              <div className="h-2 w-12 sm:w-2 sm:h-20 bg-yellow-400 ml-3 sm:ml-0 sm:mt-3 rounded-full"></div>
-            </div>
-
-            {/* Defense Zone */}
-            <div className="w-full sm:flex-1 bg-green-500/20 rounded-2xl p-6 sm:p-8 sm:ml-6 border-2 border-green-500">
-              <h3 className="text-green-400 font-bold text-xl sm:text-2xl mb-4 sm:mb-6 text-center"> DEFENSE ZONE</h3>
-              <div className="flex items-center justify-center h-20 sm:h-32">
-                {gameState.placedFactors.length > 0 ? (
-                  <div className="text-center w-full">
-                    <div className="flex flex-wrap gap-1 sm:gap-2 justify-center mb-1 sm:mb-2">
-                      {gameState.placedFactors.map((factor, index) => (
-                        <button
-                          key={index}
-                          onClick={() => removeFactor(index)}
-                          className="bg-green-600 hover:bg-red-600 text-white px-2 sm:px-3 py-1 rounded-lg font-bold transition-colors text-sm sm:text-base min-w-[32px] sm:min-w-[40px]"
-                          title="Tap to remove"
-                        >
-                          {factor}
-                        </button>
-                      ))}
-                    </div>
-                    <div className="text-green-300 text-xs sm:text-sm">
-                      {gameState.placedFactors.join(' × ')} = {gameState.placedFactors.reduce((a, b) => a * b, 1)}
+              {/* Preview Battle Area */}
+              <div className="bg-black/30 backdrop-blur-xl rounded-3xl shadow-2xl p-8 mb-8 border border-purple-500/30 hover:border-purple-400/50 transition-all duration-500 shadow-purple-500/20">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 items-center">
+                  
+                  {/* Enemy Zone Preview */}
+                  <div className="bg-gradient-to-br from-red-900/50 to-red-800/50 backdrop-blur-sm rounded-2xl p-6 border-2 border-red-500/40 shadow-xl shadow-red-500/20 hover:shadow-red-500/30 transition-all duration-300">
+                    <h3 className="text-red-300 font-black text-xl mb-6 text-center tracking-wider">
+                      ENEMY ZONE
+                    </h3>
+                    <div className="flex items-center justify-center h-28">
+                      <div className="text-red-400/60 text-center text-base bg-black/30 rounded-xl p-4 border border-red-500/30 font-bold tracking-wide">
+                        ENEMY WILL APPEAR HERE
+                      </div>
                     </div>
                   </div>
-                ) : (
-                  <div className="text-green-300 text-sm sm:text-xl opacity-50 text-center px-2">
-                    Place prime factors here
+
+                  {/* VS Separator */}
+                  <div className="flex items-center justify-center">
+                    <div className="text-5xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent animate-pulse tracking-widest">
+                      VS
+                    </div>
                   </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Prime Number Buttons */}
-        {gameState.currentEnemy && (
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 sm:p-8 mb-8 sm:mb-12">
-            <h3 className="text-white font-bold text-xl sm:text-2xl mb-6 sm:mb-8 text-center">🔢 Prime Numbers</h3>
-            <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 sm:gap-4">
-              {PRIME_NUMBERS.slice(0, 15).map((prime) => (
-                <button
-                  key={prime}
-                  onClick={() => placeFactor(prime)}
-                  className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white px-3 sm:px-5 py-3 sm:py-4 rounded-xl font-bold text-lg sm:text-xl transition-colors touch-manipulation min-h-[50px] sm:min-h-[60px]"
-                >
-                  {prime}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Defend Button */}
-        {gameState.currentEnemy && gameState.placedFactors.length > 0 && (
-          <div className="text-center mb-8 sm:mb-12">
-            <button
-              onClick={defendAttack}
-              className="bg-green-600 hover:bg-green-700 active:bg-green-800 text-white px-12 sm:px-20 py-5 sm:py-6 rounded-2xl font-bold text-xl sm:text-2xl shadow-lg transform hover:scale-105 active:scale-95 transition-all touch-manipulation"
-            >
-               DEFEND!
-            </button>
-          </div>
-        )}
-
-        {/* Game Stats */}
-        {!gameState.currentEnemy && !gameState.gameOver && !gameState.showPopup && (
-          <div className="flex items-center justify-center space-x-8 sm:space-x-12 text-white mb-8 sm:mb-12">
-            <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold">Wave {gameState.wave}</div>
-              <div className="text-base sm:text-lg opacity-75 mt-1">Current</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-red-400">❤️ {gameState.lives}</div>
-              <div className="text-base sm:text-lg opacity-75 mt-1">Lives</div>
-            </div>
-          </div>
-        )}
-
-        {/* Start Wave Button */}
-        {!gameState.currentEnemy && !gameState.gameOver && !gameState.showPopup && (
-          <div className="text-center mb-8 sm:mb-12">
-            <button
-              onClick={spawnWave}
-              className="bg-purple-600 hover:bg-purple-700 text-white px-10 sm:px-16 py-5 sm:py-6 rounded-2xl font-bold text-xl sm:text-2xl transform hover:scale-105 active:scale-95 transition-all touch-manipulation border border-white/20"
-            >
-              ⚔️ Start Wave {gameState.wave}
-            </button>
-          </div>
-        )}
-
-        {/* Game Over Screen */}
-        {gameState.gameOver && (
-          <div className="text-center">
-            <div className="bg-red-500/20 border-2 border-red-500 rounded-xl p-4 sm:p-8 mb-4 sm:mb-6">
-              <h2 className="text-2xl sm:text-4xl font-bold text-red-400 mb-3 sm:mb-4">💀 Game Over!</h2>
-              <p className="text-white text-lg sm:text-xl mb-4 sm:mb-6">
-                You reached Wave {gameState.wave} before running out of lives.
-              </p>
-              <button
-                onClick={resetGame}
-                className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-lg sm:text-xl touch-manipulation"
-              >
-                🔄 Play Again
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Popup Modal */}
-        {gameState.showPopup && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className={`w-full max-w-sm mx-auto rounded-xl p-4 sm:p-8 text-center ${
-              gameState.popupType === 'victory' 
-                ? 'bg-green-500/20 border-2 border-green-500' 
-                : 'bg-red-500/20 border-2 border-red-500'
-            }`}>
-              <div className="text-white mb-4 whitespace-pre-line text-sm sm:text-base leading-relaxed">
-                {gameState.popupMessage}
-              </div>
-              <button
-                onClick={closePopup}
-                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-bold text-white text-sm sm:text-base touch-manipulation min-h-[44px] ${
-                  gameState.popupType === 'victory'
-                    ? 'bg-green-600 hover:bg-green-700 active:bg-green-800'
-                    : 'bg-red-600 hover:bg-red-700 active:bg-red-800'
-                }`}
-              >
-                {gameState.gameOver ? ' Play Again' : ' Continue'}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Video Tutorial Modal */}
-        {gameState.showVideoModal && (
-          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="w-full max-w-sm sm:max-w-md mx-auto rounded-xl overflow-hidden shadow-2xl">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 flex items-center justify-between">
-                <h3 className="text-white font-bold text-sm sm:text-lg"> How to Play</h3>
-                <button
-                  onClick={() => setGameState(prev => ({ ...prev, showVideoModal: false }))}
-                  className="text-white hover:text-red-300 transition-colors text-2xl font-bold"
-                >
-                  ✕
-                </button>
-              </div>
-              <div className="bg-black">
-                <div className="aspect-[9/16] max-h-[70vh]">
-                  <video 
-                    controls 
-                    className="w-full h-full object-contain"
-                  >
-                    <source src="/primeguardian_tutorial.mp4" type="video/mp4" />
-                    <p className="text-white text-center p-8">
-                      Your browser does not support video playback. 
-                      <br />
-                      Please try a different browser.
-                    </p>
-                  </video>
+                  {/* Defense Zone Preview */}
+                  <div className="bg-gradient-to-br from-green-900/50 to-emerald-800/50 backdrop-blur-sm rounded-2xl p-6 border-2 border-green-500/40 shadow-xl shadow-green-500/20 hover:shadow-green-500/30 transition-all duration-300">
+                    <h3 className="text-green-300 font-black text-xl mb-6 text-center tracking-wider">
+                      DEFENSE ZONE
+                    </h3>
+                    <div className="flex items-center justify-center h-28">
+                      <div className="text-green-400/60 text-center text-base bg-black/30 rounded-xl p-4 border border-green-500/30 font-bold tracking-wide">
+                        PLACE PRIME FACTORS HERE
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 text-center">
+
+              {/* Action Buttons - Below Battle Area */}
+              <div className="flex gap-6 w-full">
                 <button
-                  onClick={() => setGameState(prev => ({ ...prev, showVideoModal: false }))}
-                  className="bg-white/20 hover:bg-white/30 text-white px-6 py-2 rounded-lg font-bold transition-colors"
+                  onClick={() => setGameState(prev => ({ ...prev, showVideoModal: true }))}
+                  className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white px-8 py-5 rounded-2xl font-black text-xl transition-all duration-300 shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50 flex-1 border border-purple-400/30 hover:border-purple-300/50 hover:scale-105 active:scale-95 tracking-wide"
                 >
-                  Got it! Lets Play 
+                  HOW TO PLAY
+                </button>
+                <button
+                  onClick={spawnWave}
+                  className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white px-8 py-5 rounded-2xl font-black text-xl shadow-2xl shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300 flex-1 border border-blue-400/30 hover:border-blue-300/50 hover:scale-105 active:scale-95 tracking-wide"
+                >
+                  START WAVE {gameState.wave}
                 </button>
               </div>
             </div>
-          </div>
-        )}
+          )}
+
+          {/* Game Stats During Battle */}
+          {gameState.currentEnemy && (
+            <div className="bg-black/30 backdrop-blur-xl rounded-3xl shadow-2xl p-8 mb-8 border border-purple-500/30 hover:border-purple-400/50 transition-all duration-500 shadow-purple-500/20">
+              <div className="flex items-center justify-center space-x-12 text-white">
+                <div className="text-center bg-gradient-to-br from-blue-900/50 to-cyan-900/50 backdrop-blur-sm rounded-2xl p-6 shadow-xl shadow-blue-500/20 border border-blue-500/30">
+                  <div className="text-3xl font-black text-blue-300 mb-2 tracking-wider">
+                    WAVE {gameState.wave}
+                  </div>
+                  <div className="text-sm text-blue-400 font-bold uppercase tracking-widest">Current Mission</div>
+                </div>
+                <div className="text-center bg-gradient-to-br from-red-900/50 to-pink-900/50 backdrop-blur-sm rounded-2xl p-6 shadow-xl shadow-red-500/20 border border-red-500/30">
+                  <div className="text-3xl font-black text-red-300 mb-2 flex items-center justify-center gap-2">
+                    {Array.from({ length: gameState.lives }, (_, i) => (
+                      <div key={i} className="w-4 h-4 bg-gradient-to-br from-red-400 to-red-600 rounded-full shadow-lg animate-pulse"></div>
+                    ))}
+                  </div>
+                  <div className="text-sm text-red-400 font-bold uppercase tracking-widest">Lives Remaining</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Timer Display */}
+          {gameState.currentEnemy && (
+            <div className="text-center mb-8">
+              <div className="bg-black/40 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 shadow-purple-500/20">
+                <div className={`text-7xl font-black ${getTimerColorLight()} flex items-center justify-center gap-6 mb-4`}>
+                  <div className="relative">
+                    <svg className="w-16 h-16 animate-spin" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z"/>
+                      <path d="M12.5 7H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
+                    </svg>
+                    <div className="absolute inset-0 rounded-full border-4 border-purple-500/30 animate-pulse"></div>
+                  </div>
+                  <span className="tabular-nums tracking-wider">{gameState.timeLeft}</span>
+                </div>
+                <div className="text-purple-200 text-2xl font-bold mb-6 tracking-wider">SECONDS REMAINING</div>
+                <div className="w-full bg-gray-800/50 rounded-full h-4 overflow-hidden border border-purple-500/30">
+                  <div 
+                    className={`h-full transition-all duration-1000 ease-linear shadow-lg ${
+                      gameState.timeLeft > 10 ? 'bg-gradient-to-r from-green-400 to-green-600 shadow-green-500/50' : 
+                      gameState.timeLeft > 5 ? 'bg-gradient-to-r from-yellow-400 to-orange-500 shadow-yellow-500/50' : 'bg-gradient-to-r from-red-500 to-red-700 shadow-red-500/50'
+                    }`}
+                    style={{ width: `${(gameState.timeLeft / 15) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Battle Arena - During Active Game */}
+          {gameState.currentEnemy && (
+            <div className="bg-black/40 backdrop-blur-xl rounded-3xl shadow-2xl p-10 mb-8 border border-purple-500/30 hover:border-purple-400/50 transition-all duration-500 shadow-purple-500/20">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 items-center">
+                
+                {/* Enemy Zone */}
+                <div className="bg-gradient-to-br from-red-900/60 to-red-800/60 backdrop-blur-sm rounded-3xl p-8 border-2 border-red-500/50 shadow-2xl shadow-red-500/30 hover:shadow-red-500/40 transition-all duration-300 hover:scale-105">
+                  <h3 className="text-red-300 font-black text-2xl mb-8 text-center tracking-wider">
+                    ENEMY ZONE
+                  </h3>
+                  <div className="flex items-center justify-center h-32">
+                    <div className="text-center bg-black/40 rounded-2xl p-6 shadow-xl border border-red-400/30">
+                      <div className="text-6xl font-black text-red-400 mb-3 animate-pulse tracking-wider">
+                        {gameState.currentEnemy.number}
+                      </div>
+                      <div className="text-red-300 text-lg font-bold uppercase tracking-widest">Composite Number</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* VS Separator */}
+                <div className="flex items-center justify-center">
+                  <div className="text-6xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent animate-pulse tracking-widest">
+                    VS
+                  </div>
+                </div>
+
+                {/* Defense Zone */}
+                <div className="bg-gradient-to-br from-green-900/60 to-emerald-800/60 backdrop-blur-sm rounded-3xl p-8 border-2 border-green-500/50 shadow-2xl shadow-green-500/30 hover:shadow-green-500/40 transition-all duration-300 hover:scale-105">
+                  <h3 className="text-green-300 font-black text-2xl mb-8 text-center tracking-wider">
+                    DEFENSE ZONE
+                  </h3>
+                  <div className="flex items-center justify-center h-32">
+                    {gameState.placedFactors.length > 0 ? (
+                      <div className="text-center w-full">
+                        <div className="flex flex-wrap gap-3 justify-center mb-4">
+                          {gameState.placedFactors.map((factor, index) => (
+                            <button
+                              key={index}
+                              onClick={() => removeFactor(index)}
+                              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-red-500 hover:to-red-600 text-white px-4 py-3 rounded-xl font-black transition-all duration-300 text-xl min-w-[56px] shadow-xl hover:shadow-2xl hover:scale-110 border border-green-400/30 hover:border-red-400/30"
+                              title="Tap to remove"
+                            >
+                              {factor}
+                            </button>
+                          ))}
+                        </div>
+                        <div className="text-green-300 text-base font-bold bg-black/40 rounded-xl p-3 border border-green-400/30 tracking-wide">
+                          {gameState.placedFactors.join(' × ')} = {gameState.placedFactors.reduce((a, b) => a * b, 1)}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-green-400/60 text-center text-lg bg-black/40 rounded-2xl p-6 border border-green-500/30 font-bold tracking-wide">
+                        PLACE PRIME FACTORS HERE
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Prime Number Buttons */}
+          {gameState.currentEnemy && (
+            <div className="bg-black/30 backdrop-blur-xl rounded-3xl shadow-2xl p-8 mb-8 border border-purple-500/30 hover:border-purple-400/50 transition-all duration-500 shadow-purple-500/20">
+              <h3 className="text-purple-100 font-black text-2xl mb-8 text-center tracking-wider">PRIME NUMBERS ARSENAL</h3>
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-4">
+                {PRIME_NUMBERS.slice(0, 15).map((prime) => (
+                  <button
+                    key={prime}
+                    onClick={() => placeFactor(prime)}
+                    className="bg-gradient-to-br from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white px-4 py-4 rounded-xl font-black text-xl transition-all duration-300 min-h-[60px] shadow-xl hover:shadow-2xl hover:scale-110 active:scale-95 border border-purple-500/30 hover:border-purple-400/50"
+                  >
+                    {prime}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Defend Button */}
+          {gameState.currentEnemy && gameState.placedFactors.length > 0 && (
+            <div className="text-center mb-8">
+              <button
+                onClick={defendAttack}
+                className="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white px-16 py-6 rounded-3xl font-black text-3xl shadow-2xl shadow-emerald-500/40 hover:shadow-emerald-500/60 transition-all duration-300 hover:scale-110 active:scale-95 border border-emerald-400/30 hover:border-emerald-300/50 tracking-widest animate-pulse"
+              >
+                DEFEND!
+              </button>
+            </div>
+          )}
+
+          {/* Game Over Screen */}
+          {gameState.gameOver && (
+            <div className="text-center">
+              <div className="bg-black/40 backdrop-blur-xl border-2 border-red-500/50 rounded-3xl p-10 mb-6 shadow-2xl shadow-red-500/30">
+                <h2 className="text-4xl font-black bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent mb-6 tracking-wider">
+                  MISSION FAILED!
+                </h2>
+                <p className="text-red-200 text-xl mb-8 font-medium tracking-wide">
+                  You reached Wave {gameState.wave} before running out of lives.
+                </p>
+                <button
+                  onClick={resetGame}
+                  className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white px-10 py-5 rounded-2xl font-black text-2xl transition-all duration-300 shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 border border-purple-400/30 hover:border-purple-300/50 hover:scale-105 active:scale-95 tracking-wider"
+                >
+                  PLAY AGAIN
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
+
+      {/* Popup Modal */}
+      {gameState.showPopup && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className={`w-full max-w-sm mx-auto rounded-3xl p-8 text-center bg-black/40 backdrop-blur-xl shadow-2xl border-2 ${
+            gameState.popupType === 'victory' 
+              ? 'border-green-500/50 shadow-green-500/30' 
+              : 'border-red-500/50 shadow-red-500/30'
+          }`}>
+            <div className="text-white mb-6 whitespace-pre-line text-lg leading-relaxed font-medium">
+              {gameState.popupMessage}
+            </div>
+            <button
+              onClick={closePopup}
+              className={`px-8 py-4 rounded-2xl font-black text-white text-xl min-h-[60px] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 tracking-wide border ${
+                gameState.popupType === 'victory'
+                  ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 border-green-500/30 hover:border-green-400/50'
+                  : 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 border-red-500/30 hover:border-red-400/50'
+              }`}
+            >
+              {gameState.gameOver ? 'PLAY AGAIN' : 'CONTINUE'}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Video Tutorial Modal */}
+      {gameState.showVideoModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="w-full max-w-sm sm:max-w-md mx-auto rounded-3xl overflow-hidden shadow-2xl bg-black/40 backdrop-blur-xl border border-purple-500/30">
+            <div className="bg-gradient-to-r from-purple-600 to-purple-700 p-6 flex items-center justify-between">
+              <h3 className="text-white font-black text-xl tracking-wide">HOW TO PLAY</h3>
+              <button
+                onClick={() => setGameState(prev => ({ ...prev, showVideoModal: false }))}
+                className="text-white hover:text-red-300 transition-all duration-300 text-2xl font-bold hover:scale-110"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="bg-black">
+              <div className="aspect-[9/16] max-h-[70vh]">
+                <video 
+                  controls 
+                  className="w-full h-full object-contain"
+                >
+                  <source src="/primeguardian_tutorial.mp4" type="video/mp4" />
+                  <p className="text-white text-center p-8">
+                    Your browser does not support video playback. 
+                    <br />
+                    Please try a different browser.
+                  </p>
+                </video>
+              </div>
+            </div>
+            <div className="bg-gradient-to-r from-purple-600 to-purple-700 p-6 text-center">
+              <button
+                onClick={() => setGameState(prev => ({ ...prev, showVideoModal: false }))}
+                className="bg-black/30 hover:bg-black/50 text-white px-8 py-3 rounded-2xl font-black transition-all duration-300 hover:scale-105 active:scale-95 border border-purple-400/30 hover:border-purple-300/50 tracking-wide"
+              >
+                GOT IT! LETS PLAY
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -218,7 +218,7 @@ function Planet({ planetData, isInOrbit, angle = 0, onClick, isClickable = true,
         )}
         {planetData.name === 'Uranus' && (
           <img 
-            src="https://c.tenor.com/Cc8vOIn32VgAAAAd/tenor.gif"
+            src="/uranus.gif"
             alt="Uranus"
             className="w-full h-full rounded-full object-cover"
           />
@@ -656,7 +656,7 @@ export default function SolarSystemExplorer() {
                   )}
                   {selectedPlanetInfo.name === 'Uranus' && (
                     <img 
-                      src="https://c.tenor.com/Cc8vOIn32VgAAAAd/tenor.gif"
+                      src="/uranus.gif"
                       alt="Uranus"
                       className="w-full h-full rounded-full object-cover"
                     />
@@ -857,7 +857,7 @@ export default function SolarSystemExplorer() {
                     )}
                     {planet.name === 'Uranus' && (
                       <img 
-                        src="https://c.tenor.com/Cc8vOIn32VgAAAAd/tenor.gif"
+                        src="/uranus.gif"
                         alt="Uranus"
                         className="w-full h-full rounded-full object-cover"
                       />

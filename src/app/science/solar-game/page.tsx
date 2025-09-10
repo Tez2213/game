@@ -3,6 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+// Import translation files
+import enTranslations from '../../../../locales/solar-en.json';
+import hiTranslations from '../../../../locales/solar-hi.json';
+import orTranslations from '../../../../locales/solar-or.json';
+
 // Planet data with colors and sizes - optimized for mobile
 const planetsData = [
   { 
@@ -140,7 +145,7 @@ const shuffleArray = (array: Planet[]) => {
 };
 
 // Planet component
-function Planet({ planetData, isInOrbit, angle = 0, onClick, isClickable = true, centerX, centerY }: {
+function Planet({ planetData, isInOrbit, angle = 0, onClick, isClickable = true, centerX, centerY, getPlanetImageKey }: {
   planetData: Planet;
   isInOrbit: boolean;
   angle?: number;
@@ -148,10 +153,13 @@ function Planet({ planetData, isInOrbit, angle = 0, onClick, isClickable = true,
   isClickable?: boolean;
   centerX: number;
   centerY: number;
+  getPlanetImageKey: (name: string) => string;
 }) {
   // Calculate position based on orbit with proper circular motion
   const x = isInOrbit ? centerX + Math.cos(angle) * planetData.distance : 0;
   const y = isInOrbit ? centerY + Math.sin(angle) * planetData.distance : 0;
+
+  const imageKey = getPlanetImageKey(planetData.name);
 
   return (
     <div
@@ -167,56 +175,56 @@ function Planet({ planetData, isInOrbit, angle = 0, onClick, isClickable = true,
       data-planet={planetData.name}
     >
       <span className="text-white text-xs font-bold">
-        {planetData.name === 'Mercury' && (
+        {imageKey === 'Mercury' && (
           <img 
             src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmV3cDRtamtubXE2b2dnaG51Nno5dnBleTNmaXI0NWQxcjYzNTA1cSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/108bNXja5KRrkA/giphy.gif"
             alt="Mercury"
             className="w-full h-full rounded-full object-cover"
           />
         )}
-        {planetData.name === 'Venus' && (
+        {imageKey === 'Venus' && (
           <img 
             src="/venus.webp"
             alt="Venus"
             className="w-full h-full rounded-full object-cover"
           />
         )}
-        {planetData.name === 'Earth' && (
+        {imageKey === 'Earth' && (
           <img 
             src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExajVzbGhmZDh4aGx4Nmc4ZjhnZjVpeHRqc290bjA4b3NsaTF6YmhzeCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/41SIOpeqCfIru/giphy.gif"
             alt="Earth"
             className="w-full h-full rounded-full object-cover"
           />
         )}
-        {planetData.name === 'Mars' && (
+        {imageKey === 'Mars' && (
           <img 
             src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXE1ejZpNWN2eXdxcWgxcWpqaG5vZ2Y5dDFvNDI3MnNza2F3eWJ5aCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/JRZwMhzk7WolG/giphy.gif"
             alt="Mars"
             className="w-full h-full rounded-full object-cover"
           />
         )}
-        {planetData.name === 'Jupiter' && (
+        {imageKey === 'Jupiter' && (
           <img 
             src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnZkdTllZnQzd2Izc201MzUxNzd5aXE5bWhjYjJ4OTczd3BseXkxOCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/e6l0YRVArTH8I/giphy.gif"
             alt="Jupiter"
             className="w-full h-full rounded-full object-cover"
           />
         )}
-        {planetData.name === 'Neptune' && (
+        {imageKey === 'Neptune' && (
           <img 
             src="/ezgif.com-gif-maker.gif"
             alt="Neptune"
             className="w-full h-full rounded-full object-cover"
           />
         )}
-        {planetData.name === 'Saturn' && (
+        {imageKey === 'Saturn' && (
           <img 
             src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWx4Zm92dTZqZGdqZnE1dmdjZ3dvd20wOWJmemxibHlvdXh6ejJ3cyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/IqC4IsUmtbpqn2on8W/giphy.gif"
             alt="Saturn"
             className="w-[42px] h-[42px] rounded-full object-cover"
           />
         )}
-        {planetData.name === 'Uranus' && (
+        {imageKey === 'Uranus' && (
           <img 
             src="/uranus.gif"
             alt="Uranus"
@@ -252,8 +260,71 @@ function OrbitRing({ radius, isHighlighted, centerX, centerY }: {
 }
 
 export default function SolarSystemExplorer() {
-  const [availablePlanets, setAvailablePlanets] = useState<Planet[]>(() => shuffleArray(planetsData));
+  // Translation system
+  const [currentLanguage, setCurrentLanguage] = useState<'en' | 'hi' | 'or'>('en');
+  const translations = {
+    en: enTranslations,
+    hi: hiTranslations,
+    or: orTranslations
+  };
+  const t = (translations as any)[currentLanguage];
+
+  // Map planet names to their English equivalents for image matching
+  const getPlanetImageKey = (name: string) => {
+    const planetImages = {
+      'Mercury': 'Mercury', 'बुध': 'Mercury', 'ବୁଧ': 'Mercury',
+      'Venus': 'Venus', 'शुक्र': 'Venus', 'ଶୁକ୍ର': 'Venus',
+      'Earth': 'Earth', 'पृथ्वी': 'Earth', 'ପୃଥିବୀ': 'Earth',
+      'Mars': 'Mars', 'मंगल': 'Mars', 'ମଙ୍ଗଳ': 'Mars',
+      'Jupiter': 'Jupiter', 'बृहस्पति': 'Jupiter', 'ବୃହସ୍ପତି': 'Jupiter',
+      'Saturn': 'Saturn', 'शनि': 'Saturn', 'ଶନି': 'Saturn',
+      'Uranus': 'Uranus', 'अरुण': 'Uranus', 'ଅରୁଣ': 'Uranus',
+      'Neptune': 'Neptune', 'वरुण': 'Neptune', 'ବରୁଣ': 'Neptune'
+    };
+    return planetImages[name as keyof typeof planetImages] || name;
+  };
+
+  // Generate dynamic planet data from translations
+  const getTranslatedPlanetsData = () => {
+    const planetKeys = ['mercury', 'venus', 'earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune'];
+    const staticData = [
+      { color: '#8C7853', size: 24, distance: 65 },
+      { color: '#FFC649', size: 28, distance: 85 },
+      { color: '#6B93D6', size: 30, distance: 105 },
+      { color: '#CD5C5C', size: 26, distance: 125 },
+      { color: '#D8CA9D', size: 50, distance: 150 },
+      { color: '#FAD5A5', size: 35, distance: 175 },
+      { color: '#4FD0E7', size: 35, distance: 200 },
+      { color: '#4B70DD', size: 35, distance: 225 }
+    ];
+
+    return planetKeys.map((key, index) => ({
+      name: t.planets[key]?.name || planetKeys[index],
+      hint: t.planets[key]?.hint || '',
+      facts: t.planets[key]?.facts || [],
+      funFact: t.planets[key]?.funFact || '',
+      relatedTopics: t.planets[key]?.relatedTopics || [],
+      ...staticData[index]
+    }));
+  };
+
+  const [availablePlanets, setAvailablePlanets] = useState<Planet[]>(() => shuffleArray(getTranslatedPlanetsData()));
   const [placedPlanets, setPlacedPlanets] = useState<Planet[]>([]);
+
+  // Update planet data when language changes
+  useEffect(() => {
+    const translatedData = getTranslatedPlanetsData();
+    setAvailablePlanets(shuffleArray(translatedData.filter(planet => 
+      !placedPlanets.some(placed => placed.name === planet.name)
+    )));
+    setPlacedPlanets(prev => prev.map(placed => {
+      const updated = translatedData.find(p => 
+        planetsData.findIndex(orig => orig.name === placed.name) === 
+        translatedData.findIndex(trans => trans.name === p.name)
+      );
+      return updated || placed;
+    }));
+  }, [currentLanguage]);
   const [gameComplete, setGameComplete] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [currentHint, setCurrentHint] = useState('');
@@ -325,7 +396,8 @@ export default function SolarSystemExplorer() {
 
   const handlePlanetClick = (planetData: Planet) => {
     // Check if this is the correct next planet
-    const correctOrbitIndex = planetsData.findIndex(p => p.name === planetData.name);
+    const translatedData = getTranslatedPlanetsData();
+    const correctOrbitIndex = translatedData.findIndex(p => p.name === planetData.name);
     const isCorrectNext = placedPlanets.length === correctOrbitIndex;
     
     if (isCorrectNext) {
@@ -432,7 +504,8 @@ export default function SolarSystemExplorer() {
     if (availablePlanets.length > 0) {
       // Find the next planet that should be placed
       const nextCorrectIndex = placedPlanets.length;
-      const nextPlanet = planetsData[nextCorrectIndex];
+      const translatedData = getTranslatedPlanetsData();
+      const nextPlanet = translatedData[nextCorrectIndex];
       
       if (nextPlanet) {
         setCurrentHint(nextPlanet.hint);
@@ -447,7 +520,8 @@ export default function SolarSystemExplorer() {
   };
 
   const resetGame = () => {
-    setAvailablePlanets(shuffleArray(planetsData));
+    const translatedData = getTranslatedPlanetsData();
+    setAvailablePlanets(shuffleArray(translatedData));
     setPlacedPlanets([]);
     setGameComplete(false);
     setShowHint(false);
@@ -489,17 +563,29 @@ export default function SolarSystemExplorer() {
       <div className="absolute top-2 left-2 right-2 z-10">
         <div className="flex items-center justify-between mb-2">
           <Link href="https://eklavyaa.vercel.app/chapters/science-world" className="text-white hover:text-yellow-300 transition-colors text-sm">
-            ← Back
+            {t.header?.backButton || "← Back"}
           </Link>
-          <button
-            onClick={resetGame}
-            className="text-white hover:text-red-400 transition-all duration-300 text-sm font-medium border border-white/30 hover:border-red-400/50 px-3 py-1 rounded-md hover:shadow-lg hover:shadow-red-500/25 backdrop-blur-sm"
-          >
-            ↻ Reset
-          </button>
+          <div className="flex items-center gap-2">
+            {/* Language Selector */}
+            <select
+              value={currentLanguage}
+              onChange={(e) => setCurrentLanguage(e.target.value as 'en' | 'hi' | 'or')}
+              className="bg-gray-800 text-white text-xs px-2 py-1 rounded border border-gray-600 focus:outline-none focus:border-blue-400"
+            >
+              <option value="en">EN</option>
+              <option value="hi">हिं</option>
+              <option value="or">ଓଡ଼ି</option>
+            </select>
+            <button
+              onClick={resetGame}
+              className="text-white hover:text-red-400 transition-all duration-300 text-sm font-medium border border-white/30 hover:border-red-400/50 px-3 py-1 rounded-md hover:shadow-lg hover:shadow-red-500/25 backdrop-blur-sm"
+            >
+              {t.header?.resetButton || "↻ Reset"}
+            </button>
+          </div>
         </div>
         <h1 className="text-white text-xl md:text-3xl font-bold text-center drop-shadow-lg">
-           Solar System 
+          {t.header?.title || "Solar System"}
         </h1>
         <p className="text-yellow-200 text-center text-sm md:text-lg">
         </p>
@@ -516,24 +602,25 @@ export default function SolarSystemExplorer() {
       {gameComplete && (
         <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center z-30 p-4">
           <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white p-6 md:p-10 rounded-xl text-center shadow-2xl max-w-sm">
-            <h2 className="text-2xl md:text-4xl font-bold mb-4"> Amazing! </h2>
-            <p className="text-sm md:text-xl mb-6">You completed the Solar System!</p>
+            <h2 className="text-2xl md:text-4xl font-bold mb-4">{t.modals?.completion?.title || "Amazing!"}</h2>
+            <p className="text-sm md:text-xl mb-6">{t.modals?.completion?.message || "You completed the Solar System!"}</p>
             <div className="space-y-3">
               <button
                 onClick={resetGame}
                 className="w-full bg-white text-green-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition-all shadow-lg"
               >
-                 Play Again
+                {t.modals?.completion?.playAgain || "Play Again"}
               </button>
               <button
                 onClick={() => {
                   setShowFacts(true);
-                  setSelectedPlanetInfo(planetsData[Math.floor(Math.random() * planetsData.length)]);
+                  const translatedData = getTranslatedPlanetsData();
+                  setSelectedPlanetInfo(translatedData[Math.floor(Math.random() * translatedData.length)]);
                   setShowPlanetInfo(true);
                 }}
                 className="w-full bg-yellow-400 text-black px-6 py-3 rounded-lg font-bold hover:bg-yellow-300 transition-all shadow-lg"
               >
-                 Learn More Facts
+                {t.modals?.completion?.learnMore || "Learn More Facts"}
               </button>
             </div>
           </div>
@@ -553,29 +640,24 @@ export default function SolarSystemExplorer() {
           <div className="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white p-8 rounded-2xl text-center shadow-2xl max-w-md border border-purple-500 relative" style={{ backgroundColor: 'rgba(30, 27, 75, 0.95)' }}>
             <div className="mb-6">
               <div className="text-6xl mb-4"></div>
-              <h1 className="text-3xl font-bold mb-2 text-yellow-300">Solar System Explorer</h1>
-              <p className="text-blue-200 text-lg">Educational Planet Game</p>
+              <h1 className="text-3xl font-bold mb-2 text-yellow-300">{t.modals?.welcome?.title || "Solar System Explorer"}</h1>
+              <p className="text-blue-200 text-lg">{t.modals?.welcome?.subtitle || "Educational Planet Game"}</p>
             </div>
             
             <div className="mb-6 text-left">
-              <h2 className="text-xl font-bold mb-3 text-yellow-300">🎮 How to Play:</h2>
+              <h2 className="text-xl font-bold mb-3 text-yellow-300">{t.modals?.welcome?.howToPlay || "🎮 How to Play:"}</h2>
               <ul className="text-sm space-y-2 text-gray-200">
-                <li className="flex items-start gap-2">
-                  <span className="text-green-400">1.</span>
-                  <span>Tap planets in order from closest to Sun</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-400">2.</span>
-                  <span>Watch them orbit around the Sun</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-400">3.</span>
-                  <span>Click orbiting planets to learn facts</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-400">4.</span>
-                  <span>Complete all 8 planets to win!</span>
-                </li>
+                {(t.modals?.welcome?.instructions || [
+                  "Tap planets in order from closest to Sun",
+                  "Watch them orbit around the Sun", 
+                  "Click orbiting planets to learn facts",
+                  "Complete all 8 planets to win!"
+                ]).map((instruction: string, index: number) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="text-green-400">{index + 1}.</span>
+                    <span>{instruction}</span>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -587,7 +669,7 @@ export default function SolarSystemExplorer() {
               onClick={() => setShowWelcomeModal(false)}
               className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
             >
-               Start the game
+              {t.modals?.welcome?.startButton || "Start the game"}
             </button>
           </div>
         </div>
@@ -669,7 +751,7 @@ export default function SolarSystemExplorer() {
 
             {showFacts && (
               <div className="mb-4">
-                <h4 className="font-bold text-gray-800 mb-2">Amazing Facts:</h4>
+                <h4 className="font-bold text-gray-800 mb-2">{t.modals?.planetInfo?.factsTitle || "Amazing Facts:"}</h4>
                 <ul className="text-sm text-gray-700 space-y-1">
                   {selectedPlanetInfo.facts.map((fact: string, index: number) => (
                     <li key={index} className="flex items-start gap-2">
@@ -682,7 +764,7 @@ export default function SolarSystemExplorer() {
             )}
 
             <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
-              <h4 className="font-bold text-gray-800 mb-2">Fun Fact:</h4>
+              <h4 className="font-bold text-gray-800 mb-2">{t.modals?.planetInfo?.funFactTitle || "Fun Fact:"}</h4>
               <p className="text-gray-700 text-sm">{selectedPlanetInfo.funFact}</p>
             </div>
 
@@ -691,7 +773,7 @@ export default function SolarSystemExplorer() {
                 onClick={() => setShowFacts(!showFacts)}
                 className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg font-medium transition-colors"
               >
-                {showFacts ? 'Hide Facts' : 'Show Facts'}
+                {showFacts ? (t.modals?.planetInfo?.hideFacts || "Hide Facts") : (t.modals?.planetInfo?.showFacts || "Show Facts")}
               </button>
               <button
                 onClick={() => {
@@ -701,7 +783,7 @@ export default function SolarSystemExplorer() {
                 }}
                 className="flex-1 bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-lg font-medium transition-colors"
               >
-                Close
+                {t.modals?.planetInfo?.close || "Close"}
               </button>
             </div>
           </div>
@@ -750,6 +832,7 @@ export default function SolarSystemExplorer() {
             isClickable={true}
             centerX={centerX}
             centerY={centerY}
+            getPlanetImageKey={getPlanetImageKey}
           />
         ))}
       </div>
@@ -761,9 +844,9 @@ export default function SolarSystemExplorer() {
           <div className="flex items-center justify-between mb-3">
             {/* Progress indicator */}
             <div className="flex items-center gap-2">
-              <div className="text-white text-xs font-medium">Progress:</div>
+              <div className="text-white text-xs font-medium">{t.ui?.progress || "Progress:"}</div>
               <div className="flex gap-1">
-                {planetsData.map((planet, index) => (
+                {getTranslatedPlanetsData().map((planet, index) => (
                   <div
                     key={index}
                     className={`w-2 h-2 rounded-full transition-all duration-300 ${
@@ -773,7 +856,7 @@ export default function SolarSystemExplorer() {
                         ? 'bg-yellow-500' 
                         : 'bg-gray-600'
                     }`}
-                    title={planetsData[index].name}
+                    title={getTranslatedPlanetsData()[index].name}
                   />
                 ))}
               </div>
@@ -788,12 +871,12 @@ export default function SolarSystemExplorer() {
               className="text-yellow-400 hover:text-yellow-300 transition-all duration-300 text-xs font-medium border border-yellow-400/30 hover:border-yellow-300/50 px-2 py-1 rounded-md hover:shadow-lg hover:shadow-yellow-400/25 backdrop-blur-sm hover:scale-105"
               disabled={gameComplete}
             >
-              ? Hint
+              {t.ui?.hintButton || "? Hint"}
             </button>
           </div>
           
           <h3 className="text-white text-lg font-bold mb-3 text-center">
-             Planets ({availablePlanets.length} left)
+            {t.ui?.planetsLeft?.replace('{count}', availablePlanets.length.toString()) || `Planets (${availablePlanets.length} left)`}
           </h3>
           <div className="grid grid-cols-4 gap-3 justify-items-center">
             {availablePlanets.map((planet) => (
@@ -806,62 +889,61 @@ export default function SolarSystemExplorer() {
                   className="w-12 h-12 mx-auto mb-1 flex items-center justify-center transition-colors"
                 >
                   <span className="text-white text-sm">
-                    {planet.name === 'Mercury' && (
-                      <img 
-                        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmV3cDRtamtubXE2b2dnaG51Nno5dnBleTNmaXI0NWQxcjYzNTA1cSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/108bNXja5KRrkA/giphy.gif"
-                        alt="Mercury"
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    )}
-                    {planet.name === 'Venus' && (
-                      <img 
-                        src="/venus.webp"
-                        alt="Venus"
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    )}
-                    {planet.name === 'Earth' && (
-                      <img 
-                        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExajVzbGhmZDh4aGx4Nmc4ZjhnZjVpeHRqc290bjA4b3NsaTF6YmhzeCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/41SIOpeqCfIru/giphy.gif"
-                        alt="Earth"
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    )}
-                    {planet.name === 'Mars' && (
-                      <img 
-                        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXE1ejZpNWN2eXdxcWgxcWpqaG5vZ2Y5dDFvNDI3MnNza2F3eWJ5aCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/JRZwMhzk7WolG/giphy.gif"
-                        alt="Mars"
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    )}
-                    {planet.name === 'Jupiter' && (
-                      <img 
-                        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnZkdTllZnQzd2Izc201MzUxNzd5aXE5bWhjYjJ4OTczd3BseXkxOCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/e6l0YRVArTH8I/giphy.gif"
-                        alt="Jupiter"
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    )}
-                    {planet.name === 'Neptune' && (
-                      <img 
-                        src="/ezgif.com-gif-maker.gif"
-                        alt="Neptune"
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    )}
-                    {planet.name === 'Saturn' && (
-                      <img 
-                        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWx4Zm92dTZqZGdqZnE1dmdjZ3dvd20wOWJmemxibHlvdXh6ejJ3cyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/IqC4IsUmtbpqn2on8W/giphy.gif"
-                        alt="Saturn"
-                        className="w-[44px] h-[44px] rounded-full object-cover"
-                      />
-                    )}
-                    {planet.name === 'Uranus' && (
-                      <img 
-                        src="/uranus.gif"
-                        alt="Uranus"
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    )}
+                    {(() => {
+                      const imageKey = getPlanetImageKey(planet.name);
+                      switch(imageKey) {
+                        case 'Mercury':
+                          return <img 
+                            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmV3cDRtamtubXE2b2dnaG51Nno5dnBleTNmaXI0NWQxcjYzNTA1cSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/108bNXja5KRrkA/giphy.gif"
+                            alt="Mercury"
+                            className="w-full h-full rounded-full object-cover"
+                          />;
+                        case 'Venus':
+                          return <img 
+                            src="/venus.webp"
+                            alt="Venus"
+                            className="w-full h-full rounded-full object-cover"
+                          />;
+                        case 'Earth':
+                          return <img 
+                            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExajVzbGhmZDh4aGx4Nmc4ZjhnZjVpeHRqc290bjA4b3NsaTF6YmhzeCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/41SIOpeqCfIru/giphy.gif"
+                            alt="Earth"
+                            className="w-full h-full rounded-full object-cover"
+                          />;
+                        case 'Mars':
+                          return <img 
+                            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXE1ejZpNWN2eXdxcWgxcWpqaG5vZ2Y5dDFvNDI3MnNza2F3eWJ5aCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/JRZwMhzk7WolG/giphy.gif"
+                            alt="Mars"
+                            className="w-full h-full rounded-full object-cover"
+                          />;
+                        case 'Jupiter':
+                          return <img 
+                            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnZkdTllZnQzd2Izc201MzUxNzd5aXE5bWhjYjJ4OTczd3BseXkxOCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/e6l0YRVArTH8I/giphy.gif"
+                            alt="Jupiter"
+                            className="w-full h-full rounded-full object-cover"
+                          />;
+                        case 'Neptune':
+                          return <img 
+                            src="/ezgif.com-gif-maker.gif"
+                            alt="Neptune"
+                            className="w-full h-full rounded-full object-cover"
+                          />;
+                        case 'Saturn':
+                          return <img 
+                            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWx4Zm92dTZqZGdqZnE1dmdjZ3dvd20wOWJmemxibHlvdXh6ejJ3cyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/IqC4IsUmtbpqn2on8W/giphy.gif"
+                            alt="Saturn"
+                            className="w-[44px] h-[44px] rounded-full object-cover"
+                          />;
+                        case 'Uranus':
+                          return <img 
+                            src="/uranus.gif"
+                            alt="Uranus"
+                            className="w-full h-full rounded-full object-cover"
+                          />;
+                        default:
+                          return <div className="w-full h-full rounded-full bg-gray-500"></div>;
+                      }
+                    })()}
                   </span>
                 </div>
                 <span className="text-white text-xs font-semibold">{planet.name}</span>
@@ -871,10 +953,10 @@ export default function SolarSystemExplorer() {
           {availablePlanets.length > 0 && (
             <div className="text-center mt-3 p-2 bg-blue-900 bg-opacity-50 rounded-lg border border-blue-400">
               <p className="text-blue-200 text-xs font-medium">
-                 Tap planets in order from closest to Sun!
+                {t.ui?.tapInOrder || "Tap planets in order from closest to Sun!"}
               </p>
               <p className="text-yellow-200 text-xs mt-1">
-                 Click orbiting planets to learn more!
+                {t.ui?.clickToLearn || "Click orbiting planets to learn more!"}
               </p>
             </div>
           )}

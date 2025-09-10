@@ -1,0 +1,139 @@
+{
+  "header": {
+    "title": "Solar System",
+    "backButton": "← Back",
+    "resetButton": "↻ Reset"
+  },
+  "ui": {
+    "progress": "Progress:",
+    "planetsLeft": "Planets ({count} left)",
+    "hintButton": "? Hint",
+    "tapInOrder": "Tap planets in order from closest to Sun!",
+    "clickToLearn": "Click orbiting planets to learn more!"
+  },
+  "modals": {
+    "welcome": {
+      "title": "Solar System Explorer",
+      "subtitle": "Educational Planet Game",
+      "howToPlay": "🎮 How to Play:",
+      "instructions": [
+        "Tap planets in order from closest to Sun",
+        "Watch them orbit around the Sun",
+        "Click orbiting planets to learn facts",
+        "Complete all 8 planets to win!"
+      ],
+      "startButton": "Start the game"
+    },
+    "completion": {
+      "title": "Amazing!",
+      "message": "You completed the Solar System!",
+      "playAgain": "Play Again",
+      "learnMore": "Learn More Facts"
+    },
+    "planetInfo": {
+      "factsTitle": "Amazing Facts:",
+      "funFactTitle": "Fun Fact:",
+      "showFacts": "Show Facts",
+      "hideFacts": "Hide Facts",
+      "close": "Close"
+    }
+  },
+  "planets": {
+    "mercury": {
+      "name": "Mercury",
+      "hint": "Smallest planet, closest to Sun",
+      "facts": [
+        "Mercury is the smallest planet in our solar system",
+        "A day on Mercury lasts 59 Earth days",
+        "Mercury has no atmosphere to retain heat",
+        "Temperatures range from 800°F to -300°F"
+      ],
+      "funFact": "Mercury is named after the Roman messenger god because it moves so fast around the Sun!",
+      "relatedTopics": ["Orbital mechanics", "Temperature extremes", "Planetary composition"]
+    },
+    "venus": {
+      "name": "Venus",
+      "hint": "Hottest planet with thick clouds",
+      "facts": [
+        "Venus is the hottest planet in our solar system",
+        "It rotates backwards compared to most planets",
+        "Venus has a thick, toxic atmosphere",
+        "A day on Venus is longer than its year"
+      ],
+      "funFact": "Venus is sometimes called Earth's twin, but it's more like Earth's evil twin with its hellish conditions!",
+      "relatedTopics": ["Greenhouse effect", "Atmospheric pressure", "Retrograde rotation"]
+    },
+    "earth": {
+      "name": "Earth",
+      "hint": "Our blue home planet",
+      "facts": [
+        "Earth is the only known planet with life",
+        "71% of Earth is covered by water",
+        "Earth has one natural satellite - the Moon",
+        "It takes 365.25 days to orbit the Sun"
+      ],
+      "funFact": "Earth is the only planet not named after a Roman or Greek god - it comes from Old English meaning 'ground'!",
+      "relatedTopics": ["Biodiversity", "Water cycle", "Magnetic field"]
+    },
+    "mars": {
+      "name": "Mars",
+      "hint": "The Red Planet",
+      "facts": [
+        "Mars appears red due to iron oxide (rust)",
+        "Mars has the largest volcano in the solar system",
+        "It has two small moons: Phobos and Deimos",
+        "Mars has seasons similar to Earth"
+      ],
+      "funFact": "Mars has dust storms that can cover the entire planet and last for months!",
+      "relatedTopics": ["Space exploration", "Terraforming", "Polar ice caps"]
+    },
+    "jupiter": {
+      "name": "Jupiter",
+      "hint": "Largest planet, gas giant",
+      "facts": [
+        "Jupiter is larger than all other planets combined",
+        "It has over 80 known moons",
+        "Jupiter's Great Red Spot is a giant storm",
+        "It acts as a 'cosmic vacuum cleaner'"
+      ],
+      "funFact": "Jupiter is like a failed star - if it were 80 times more massive, it could have become a second sun!",
+      "relatedTopics": ["Gas giants", "Galilean moons", "Planetary protection"]
+    },
+    "saturn": {
+      "name": "Saturn",
+      "hint": "Planet with beautiful rings",
+      "facts": [
+        "Saturn has the most spectacular ring system",
+        "It's less dense than water",
+        "Saturn has 83 confirmed moons",
+        "Its moon Titan has lakes of liquid methane"
+      ],
+      "funFact": "Saturn would float in water if you could find a bathtub big enough!",
+      "relatedTopics": ["Ring systems", "Moon systems", "Density and composition"]
+    },
+    "uranus": {
+      "name": "Uranus",
+      "hint": "Ice giant tilted sideways",
+      "facts": [
+        "Uranus rotates on its side",
+        "It's made mostly of water, methane, and ammonia",
+        "Uranus has faint rings",
+        "It's the coldest planetary atmosphere"
+      ],
+      "funFact": "Uranus spins like a rolling ball instead of a spinning top - probably due to an ancient collision!",
+      "relatedTopics": ["Axial tilt", "Ice giants", "Magnetic fields"]
+    },
+    "neptune": {
+      "name": "Neptune",
+      "hint": "Windiest planet, deep blue",
+      "facts": [
+        "Neptune has the fastest winds in the solar system",
+        "It takes 165 Earth years to orbit the Sun",
+        "Neptune was discovered through mathematics",
+        "It has 14 known moons"
+      ],
+      "funFact": "Neptune's winds can reach 1,200 mph - faster than the speed of sound on Earth!",
+      "relatedTopics": ["Mathematical prediction", "Extreme weather", "Discovery methods"]
+    }
+  }
+}

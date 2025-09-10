@@ -1,0 +1,57 @@
+{
+  "header": {
+    "title": "PRIME GUARDIANS",
+    "backButton": "Back to Math World"
+  },
+  "welcome": {
+    "title": "WELCOME TO PRIME GUARDIANS",
+    "description1": "Break down composite numbers into their prime factors to defend yourself.",
+    "description2": "Click on prime numbers to place them, then hit defend to check your answer!",
+    "howToPlay": "HOW TO PLAY",
+    "startWave": "START WAVE"
+  },
+  "gameStats": {
+    "wave": "WAVE",
+    "currentMission": "Current Mission",
+    "livesRemaining": "Lives Remaining"
+  },
+  "timer": {
+    "secondsRemaining": "SECONDS REMAINING"
+  },
+  "battleArena": {
+    "enemyZone": "ENEMY ZONE",
+    "defenseZone": "DEFENSE ZONE",
+    "vs": "VS",
+    "compositeNumber": "Composite Number",
+    "placePrimeFactors": "PLACE PRIME FACTORS HERE",
+    "enemyWillAppear": "ENEMY WILL APPEAR HERE"
+  },
+  "arsenal": {
+    "title": "PRIME NUMBERS ARSENAL"
+  },
+  "actions": {
+    "defend": "DEFEND!",
+    "playAgain": "PLAY AGAIN",
+    "continue": "CONTINUE",
+    "gotIt": "GOT IT! LETS PLAY"
+  },
+  "messages": {
+    "timeUp": "⏰ Time's Up! Enemy Won!",
+    "correctFactors": "Correct factors:",
+    "restartingWave": "Restarting from Wave 1",
+    "defendedSuccessfully": "🛡️ You Defended Successfully!",
+    "correct": "Correct!",
+    "movingToWave": "Moving to Wave",
+    "enemyWon": "💥 Enemy Won!",
+    "incorrect": "Incorrect! Correct factors:",
+    "youPlaced": "You placed:",
+    "missionFailed": "MISSION FAILED!",
+    "reachedWave": "You reached Wave {wave} before running out of lives.",
+    "tapToRemove": "Tap to remove"
+  },
+  "tutorial": {
+    "title": "HOW TO PLAY",
+    "close": "✕",
+    "videoNotSupported": "Your browser does not support video playback. Please try a different browser."
+  }
+}

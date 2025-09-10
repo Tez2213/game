@@ -3,6 +3,11 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
+// Import translation files
+import primeEn from '../../../../locales/prime-en.json';
+import primeHi from '../../../../locales/prime-hi.json';
+import primeOr from '../../../../locales/prime-or.json';
+
 interface Enemy {
   number: number;
   primeFactors: number[];
@@ -23,8 +28,41 @@ interface GameState {
 
 const PRIME_NUMBERS = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47];
 
+// Translation system
+const translations = {
+  en: primeEn,
+  hi: primeHi,
+  or: primeOr,
+};
+
+type Language = keyof typeof translations;
+
 export default function PrimeGuardians() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Language state
+  const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
+  
+  // Translation getter function
+  const t = (key: string): string => {
+    const keys = key.split('.');
+    let value: any = translations[currentLanguage];
+    
+    for (const k of keys) {
+      value = value?.[k];
+    }
+    
+    return value || key;
+  };
+
+  // Helper function for dynamic messages with variables
+  const tm = (key: string, variables: Record<string, string | number> = {}): string => {
+    let message = t(key);
+    Object.entries(variables).forEach(([varKey, varValue]) => {
+      message = message.replace(`{${varKey}}`, String(varValue));
+    });
+    return message;
+  };
   
   const [gameState, setGameState] = useState<GameState>({
     wave: 1,
@@ -103,7 +141,7 @@ export default function PrimeGuardians() {
             wave: 1, // Reset to wave 1
             currentEnemy: null,
             showPopup: true,
-            popupMessage: `⏰ Time's Up! Enemy Won!\nCorrect factors: ${prev.currentEnemy?.primeFactors.join(' × ')}\nRestarting from Wave 1`,
+            popupMessage: `${t('messages.timeUp')}\n${t('messages.correctFactors')} ${prev.currentEnemy?.primeFactors.join(' × ')}\n${t('messages.restartingWave')}`,
             popupType: 'defeat',
             gameOver: prev.lives <= 1
           };
@@ -153,7 +191,7 @@ export default function PrimeGuardians() {
         currentEnemy: null,
         placedFactors: [],
         showPopup: true,
-        popupMessage: ` You Defended Successfully!\nCorrect! ${correctFactors.join(' × ')} = ${gameState.currentEnemy?.number}\nMoving to Wave ${gameState.wave + 1}`,
+        popupMessage: `${t('messages.defendedSuccessfully')}\n${t('messages.correct')} ${correctFactors.join(' × ')} = ${gameState.currentEnemy?.number}\n${t('messages.movingToWave')} ${gameState.wave + 1}`,
         popupType: 'victory'
       }));
     } else {
@@ -165,7 +203,7 @@ export default function PrimeGuardians() {
         currentEnemy: null,
         placedFactors: [],
         showPopup: true,
-        popupMessage: `💥 Enemy Won!\nIncorrect! Correct factors: ${correctFactors.join(' × ')}\nYou placed: ${playerFactors.join(' × ')}\nRestarting from Wave 1`,
+        popupMessage: `${t('messages.enemyWon')}\n${t('messages.incorrect')} ${correctFactors.join(' × ')}\n${t('messages.youPlaced')} ${playerFactors.join(' × ')}\n${t('messages.restartingWave')}`,
         popupType: 'defeat',
         gameOver: prev.lives <= 1
       }));
@@ -240,15 +278,28 @@ export default function PrimeGuardians() {
             <Link
               href="https://eklavyaa.vercel.app/chapters/maths-world"
               className="p-3 rounded-xl bg-gradient-to-r from-purple-600/20 to-blue-600/20 hover:from-purple-600/40 hover:to-blue-600/40 backdrop-blur-sm transition-all duration-300 text-2xl text-white hover:text-purple-200 hover:scale-110 border border-purple-500/30"
+              title={t('header.backButton')}
             >
               ←
             </Link>
             <div className="flex items-center gap-4">
               <h1 className="text-3xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent drop-shadow-lg">
-                PRIME GUARDIANS
+                {t('header.title')}
               </h1>
             </div>
-            <div className="w-10"></div>
+            
+            {/* Language Selector */}
+            <div className="relative">
+              <select
+                value={currentLanguage}
+                onChange={(e) => setCurrentLanguage(e.target.value as Language)}
+                className="bg-black/30 backdrop-blur-sm border border-purple-500/30 rounded-xl px-4 py-2 text-white font-bold focus:outline-none focus:border-purple-400/50 hover:bg-black/40 transition-all duration-300"
+              >
+                <option value="en" className="bg-gray-900 text-white">English</option>
+                <option value="hi" className="bg-gray-900 text-white">हिंदी</option>
+                <option value="or" className="bg-gray-900 text-white">ଓଡ଼ିଆ</option>
+              </select>
+            </div>
           </div>  
         </div>
 
@@ -260,13 +311,13 @@ export default function PrimeGuardians() {
             <div className="text-center mb-8">
               <div className="bg-black/30 backdrop-blur-xl rounded-3xl shadow-2xl p-10 mb-8 border border-purple-500/30 hover:border-purple-400/50 transition-all duration-500 shadow-purple-500/20">
                 <h2 className="text-4xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent mb-6 tracking-wider">
-                  WELCOME TO PRIME GUARDIANS
+                  {t('welcome.title')}
                 </h2>
                 <p className="text-purple-100 text-xl mb-3 leading-relaxed font-medium">
-                  Break down composite numbers into their prime factors to defend yourself.
+                  {t('welcome.description1')}
                 </p>
                 <p className="text-purple-200 text-xl mb-8 leading-relaxed font-medium">
-                  Click on prime numbers to place them, then hit defend to check your answer!
+                  {t('welcome.description2')}
                 </p>
               </div>
 
@@ -277,11 +328,11 @@ export default function PrimeGuardians() {
                   {/* Enemy Zone Preview */}
                   <div className="bg-gradient-to-br from-red-900/50 to-red-800/50 backdrop-blur-sm rounded-2xl p-6 border-2 border-red-500/40 shadow-xl shadow-red-500/20 hover:shadow-red-500/30 transition-all duration-300">
                     <h3 className="text-red-300 font-black text-xl mb-6 text-center tracking-wider">
-                      ENEMY ZONE
+                      {t('battleArena.enemyZone')}
                     </h3>
                     <div className="flex items-center justify-center h-28">
                       <div className="text-red-400/60 text-center text-base bg-black/30 rounded-xl p-4 border border-red-500/30 font-bold tracking-wide">
-                        ENEMY WILL APPEAR HERE
+                        {t('battleArena.enemyWillAppear')}
                       </div>
                     </div>
                   </div>
@@ -289,18 +340,18 @@ export default function PrimeGuardians() {
                   {/* VS Separator */}
                   <div className="flex items-center justify-center">
                     <div className="text-5xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent animate-pulse tracking-widest">
-                      VS
+                      {t('battleArena.vs')}
                     </div>
                   </div>
 
                   {/* Defense Zone Preview */}
                   <div className="bg-gradient-to-br from-green-900/50 to-emerald-800/50 backdrop-blur-sm rounded-2xl p-6 border-2 border-green-500/40 shadow-xl shadow-green-500/20 hover:shadow-green-500/30 transition-all duration-300">
                     <h3 className="text-green-300 font-black text-xl mb-6 text-center tracking-wider">
-                      DEFENSE ZONE
+                      {t('battleArena.defenseZone')}
                     </h3>
                     <div className="flex items-center justify-center h-28">
                       <div className="text-green-400/60 text-center text-base bg-black/30 rounded-xl p-4 border border-green-500/30 font-bold tracking-wide">
-                        PLACE PRIME FACTORS HERE
+                        {t('battleArena.placePrimeFactors')}
                       </div>
                     </div>
                   </div>
@@ -313,13 +364,13 @@ export default function PrimeGuardians() {
                   onClick={() => setGameState(prev => ({ ...prev, showVideoModal: true }))}
                   className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white px-8 py-5 rounded-2xl font-black text-xl transition-all duration-300 shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50 flex-1 border border-purple-400/30 hover:border-purple-300/50 hover:scale-105 active:scale-95 tracking-wide"
                 >
-                  HOW TO PLAY
+                  {t('welcome.howToPlay')}
                 </button>
                 <button
                   onClick={spawnWave}
                   className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white px-8 py-5 rounded-2xl font-black text-xl shadow-2xl shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-300 flex-1 border border-blue-400/30 hover:border-blue-300/50 hover:scale-105 active:scale-95 tracking-wide"
                 >
-                  START WAVE {gameState.wave}
+                  {t('welcome.startWave')} {gameState.wave}
                 </button>
               </div>
             </div>
@@ -331,9 +382,9 @@ export default function PrimeGuardians() {
               <div className="flex items-center justify-center space-x-12 text-white">
                 <div className="text-center bg-gradient-to-br from-blue-900/50 to-cyan-900/50 backdrop-blur-sm rounded-2xl p-6 shadow-xl shadow-blue-500/20 border border-blue-500/30">
                   <div className="text-3xl font-black text-blue-300 mb-2 tracking-wider">
-                    WAVE {gameState.wave}
+                    {t('gameStats.wave')} {gameState.wave}
                   </div>
-                  <div className="text-sm text-blue-400 font-bold uppercase tracking-widest">Current Mission</div>
+                  <div className="text-sm text-blue-400 font-bold uppercase tracking-widest">{t('gameStats.currentMission')}</div>
                 </div>
                 <div className="text-center bg-gradient-to-br from-red-900/50 to-pink-900/50 backdrop-blur-sm rounded-2xl p-6 shadow-xl shadow-red-500/20 border border-red-500/30">
                   <div className="text-3xl font-black text-red-300 mb-2 flex items-center justify-center gap-2">
@@ -341,7 +392,7 @@ export default function PrimeGuardians() {
                       <div key={i} className="w-4 h-4 bg-gradient-to-br from-red-400 to-red-600 rounded-full shadow-lg animate-pulse"></div>
                     ))}
                   </div>
-                  <div className="text-sm text-red-400 font-bold uppercase tracking-widest">Lives Remaining</div>
+                  <div className="text-sm text-red-400 font-bold uppercase tracking-widest">{t('gameStats.livesRemaining')}</div>
                 </div>
               </div>
             </div>
@@ -361,7 +412,7 @@ export default function PrimeGuardians() {
                   </div>
                   <span className="tabular-nums tracking-wider">{gameState.timeLeft}</span>
                 </div>
-                <div className="text-purple-200 text-2xl font-bold mb-6 tracking-wider">SECONDS REMAINING</div>
+                <div className="text-purple-200 text-2xl font-bold mb-6 tracking-wider">{t('timer.secondsRemaining')}</div>
                 <div className="w-full bg-gray-800/50 rounded-full h-4 overflow-hidden border border-purple-500/30">
                   <div 
                     className={`h-full transition-all duration-1000 ease-linear shadow-lg ${
@@ -383,14 +434,14 @@ export default function PrimeGuardians() {
                 {/* Enemy Zone */}
                 <div className="bg-gradient-to-br from-red-900/60 to-red-800/60 backdrop-blur-sm rounded-3xl p-8 border-2 border-red-500/50 shadow-2xl shadow-red-500/30 hover:shadow-red-500/40 transition-all duration-300 hover:scale-105">
                   <h3 className="text-red-300 font-black text-2xl mb-8 text-center tracking-wider">
-                    ENEMY ZONE
+                    {t('battleArena.enemyZone')}
                   </h3>
                   <div className="flex items-center justify-center h-32">
                     <div className="text-center bg-black/40 rounded-2xl p-6 shadow-xl border border-red-400/30">
                       <div className="text-6xl font-black text-red-400 mb-3 animate-pulse tracking-wider">
                         {gameState.currentEnemy.number}
                       </div>
-                      <div className="text-red-300 text-lg font-bold uppercase tracking-widest">Composite Number</div>
+                      <div className="text-red-300 text-lg font-bold uppercase tracking-widest">{t('battleArena.compositeNumber')}</div>
                     </div>
                   </div>
                 </div>
@@ -398,14 +449,14 @@ export default function PrimeGuardians() {
                 {/* VS Separator */}
                 <div className="flex items-center justify-center">
                   <div className="text-6xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent animate-pulse tracking-widest">
-                    VS
+                    {t('battleArena.vs')}
                   </div>
                 </div>
 
                 {/* Defense Zone */}
                 <div className="bg-gradient-to-br from-green-900/60 to-emerald-800/60 backdrop-blur-sm rounded-3xl p-8 border-2 border-green-500/50 shadow-2xl shadow-green-500/30 hover:shadow-green-500/40 transition-all duration-300 hover:scale-105">
                   <h3 className="text-green-300 font-black text-2xl mb-8 text-center tracking-wider">
-                    DEFENSE ZONE
+                    {t('battleArena.defenseZone')}
                   </h3>
                   <div className="flex items-center justify-center h-32">
                     {gameState.placedFactors.length > 0 ? (
@@ -416,7 +467,7 @@ export default function PrimeGuardians() {
                               key={index}
                               onClick={() => removeFactor(index)}
                               className="bg-gradient-to-r from-green-500 to-green-600 hover:from-red-500 hover:to-red-600 text-white px-4 py-3 rounded-xl font-black transition-all duration-300 text-xl min-w-[56px] shadow-xl hover:shadow-2xl hover:scale-110 border border-green-400/30 hover:border-red-400/30"
-                              title="Tap to remove"
+                              title={t('messages.tapToRemove')}
                             >
                               {factor}
                             </button>
@@ -428,7 +479,7 @@ export default function PrimeGuardians() {
                       </div>
                     ) : (
                       <div className="text-green-400/60 text-center text-lg bg-black/40 rounded-2xl p-6 border border-green-500/30 font-bold tracking-wide">
-                        PLACE PRIME FACTORS HERE
+                        {t('battleArena.placePrimeFactors')}
                       </div>
                     )}
                   </div>
@@ -440,7 +491,7 @@ export default function PrimeGuardians() {
           {/* Prime Number Buttons */}
           {gameState.currentEnemy && (
             <div className="bg-black/30 backdrop-blur-xl rounded-3xl shadow-2xl p-8 mb-8 border border-purple-500/30 hover:border-purple-400/50 transition-all duration-500 shadow-purple-500/20">
-              <h3 className="text-purple-100 font-black text-2xl mb-8 text-center tracking-wider">PRIME NUMBERS ARSENAL</h3>
+              <h3 className="text-purple-100 font-black text-2xl mb-8 text-center tracking-wider">{t('arsenal.title')}</h3>
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-4">
                 {PRIME_NUMBERS.slice(0, 15).map((prime) => (
                   <button
@@ -462,7 +513,7 @@ export default function PrimeGuardians() {
                 onClick={defendAttack}
                 className="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white px-16 py-6 rounded-3xl font-black text-3xl shadow-2xl shadow-emerald-500/40 hover:shadow-emerald-500/60 transition-all duration-300 hover:scale-110 active:scale-95 border border-emerald-400/30 hover:border-emerald-300/50 tracking-widest animate-pulse"
               >
-                DEFEND!
+                {t('actions.defend')}
               </button>
             </div>
           )}
@@ -472,16 +523,16 @@ export default function PrimeGuardians() {
             <div className="text-center">
               <div className="bg-black/40 backdrop-blur-xl border-2 border-red-500/50 rounded-3xl p-10 mb-6 shadow-2xl shadow-red-500/30">
                 <h2 className="text-4xl font-black bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent mb-6 tracking-wider">
-                  MISSION FAILED!
+                  {t('messages.missionFailed')}
                 </h2>
                 <p className="text-red-200 text-xl mb-8 font-medium tracking-wide">
-                  You reached Wave {gameState.wave} before running out of lives.
+                  {tm('messages.reachedWave', { wave: gameState.wave })}
                 </p>
                 <button
                   onClick={resetGame}
                   className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white px-10 py-5 rounded-2xl font-black text-2xl transition-all duration-300 shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 border border-purple-400/30 hover:border-purple-300/50 hover:scale-105 active:scale-95 tracking-wider"
                 >
-                  PLAY AGAIN
+                  {t('actions.playAgain')}
                 </button>
               </div>
             </div>
@@ -508,7 +559,7 @@ export default function PrimeGuardians() {
                   : 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 border-red-500/30 hover:border-red-400/50'
               }`}
             >
-              {gameState.gameOver ? 'PLAY AGAIN' : 'CONTINUE'}
+              {gameState.gameOver ? t('actions.playAgain') : t('actions.continue')}
             </button>
           </div>
         </div>
@@ -519,12 +570,12 @@ export default function PrimeGuardians() {
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="w-full max-w-sm sm:max-w-md mx-auto rounded-3xl overflow-hidden shadow-2xl bg-black/40 backdrop-blur-xl border border-purple-500/30">
             <div className="bg-gradient-to-r from-purple-600 to-purple-700 p-6 flex items-center justify-between">
-              <h3 className="text-white font-black text-xl tracking-wide">HOW TO PLAY</h3>
+              <h3 className="text-white font-black text-xl tracking-wide">{t('tutorial.title')}</h3>
               <button
                 onClick={() => setGameState(prev => ({ ...prev, showVideoModal: false }))}
                 className="text-white hover:text-red-300 transition-all duration-300 text-2xl font-bold hover:scale-110"
               >
-                ✕
+                {t('tutorial.close')}
               </button>
             </div>
             <div className="bg-black">
@@ -535,9 +586,7 @@ export default function PrimeGuardians() {
                 >
                   <source src="/primeguardian_tutorial.mp4" type="video/mp4" />
                   <p className="text-white text-center p-8">
-                    Your browser does not support video playback. 
-                    <br />
-                    Please try a different browser.
+                    {t('tutorial.videoNotSupported')}
                   </p>
                 </video>
               </div>
@@ -547,7 +596,7 @@ export default function PrimeGuardians() {
                 onClick={() => setGameState(prev => ({ ...prev, showVideoModal: false }))}
                 className="bg-black/30 hover:bg-black/50 text-white px-8 py-3 rounded-2xl font-black transition-all duration-300 hover:scale-105 active:scale-95 border border-purple-400/30 hover:border-purple-300/50 tracking-wide"
               >
-                GOT IT! LETS PLAY
+                {t('actions.gotIt')}
               </button>
             </div>
           </div>

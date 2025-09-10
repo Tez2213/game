@@ -1,0 +1,206 @@
+{
+  "header": {
+    "title": "Energy Chef",
+    "backToScience": "Back to Science World"
+  },
+  "progress": {
+    "label": "Progress:",
+    "completed": "{completed}/{total} animals",
+    "questions": "Questions:",
+    "questionsCount": "{count}"
+  },
+  "animal": {
+    "feedingTime": "Feeding Time for",
+    "carnivorous": "Carnivorous",
+    "herbivorous": "Herbivorous", 
+    "omnivorous": "Omnivorous"
+  },
+  "cookingPot": {
+    "empty": "Tap food items to feed the animal (max 2 items)",
+    "preparing": "Preparing the food...",
+    "selectedItems": "{count}/2 items selected"
+  },
+  "ingredients": {
+    "title": "Choose Food Items",
+    "meat": "Meat",
+    "fish": "Fish",
+    "chicken": "Chicken", 
+    "worms": "Worms",
+    "insects": "Insects",
+    "grass": "Grass",
+    "leaves": "Leaves",
+    "fruits": "Fruits",
+    "seeds": "Seeds",
+    "carrots": "Carrots",
+    "corn": "Corn",
+    "berries": "Berries"
+  },
+  "buttons": {
+    "reset": "Reset",
+    "feedAnimal": "Feed Animal",
+    "feeding": "Feeding...",
+    "tryAgain": "Try Again",
+    "nextAnimal": "Next Animal",
+    "gotIt": "Got it!",
+    "close": "Close",
+    "ask": "Ask",
+    "showAnswer": "Show Answer!",
+    "iLearnedThis": "I Learned This!",
+    "askMore": "Ask More"
+  },
+  "modals": {
+    "success": {
+      "congratulations": "Congratulations!",
+      "goodTry": "Good try!",
+      "fedCorrectly": "You fed the animal correctly!",
+      "tryAgainMessage": "Try again with different food!",
+      "funFacts": "Fun Facts"
+    },
+    "animalFacts": {
+      "title": "Learn About {animalName}",
+      "subtitle": "Explore different topics!",
+      "tabs": {
+        "general": "General",
+        "habitat": "Habitat", 
+        "digestion": "Digestion",
+        "family": "Family"
+      },
+      "quickQuestions": "Quick Questions:",
+      "learnMore": "Learn More:",
+      "digestionQuestions": "Digestion Questions:",
+      "familyQuestions": "Family Questions:",
+      "customQuestion": "Ask your own question...",
+      "funFact": "Fun Fact:",
+      "habitat": "Habitat:",
+      "digestiveSystem": "Digestive System:",
+      "relatedAnimals": "Related Animals:"
+    },
+    "aiSuggestions": {
+      "title": "AI Learning Suggestions",
+      "subtitle": "Explore more about {animalName}!",
+      "filterByTopic": "Filter by topic:",
+      "allTopics": "All Topics",
+      "suggestedQuestions": "Suggested Questions:",
+      "noSuggestions": "No suggestions available for this topic.",
+      "clickToLearn": "Click any question to learn more!"
+    },
+    "questionTracking": {
+      "title": "Learning Time!",
+      "subtitle": "You asked about {animalName}",
+      "yourQuestion": "Your Question:",
+      "readyToLearn": "Ready to learn something amazing about {animalName}?",
+      "answer": "Answer:",
+      "greatJob": "Great job learning!"
+    },
+    "ingredientFacts": {
+      "title": "{ingredientName} Facts",
+      "foundIn": "Found in:"
+    }
+  },
+  "hints": {
+    "tipLabel": "Tip:",
+    "carnivorous": "The {animalName} is carnivorous! It only eats meat.",
+    "herbivorous": "The {animalName} is herbivorous! It only eats plants.", 
+    "omnivorous": "The {animalName} is omnivorous! It eats both plants and meat."
+  },
+  "animalData": {
+    "lion": {
+      "name": "Lion",
+      "need": "I only eat meat to stay strong!",
+      "fact": "Lions can eat up to 40kg of meat in one meal and are known as the \"King of the Jungle\"!",
+      "habitat": "African savannas and grasslands",
+      "relatedAnimals": ["Tigers", "Leopards", "Cheetahs"],
+      "digestiveSystem": "Short digestive tract optimized for processing meat quickly"
+    },
+    "rabbit": {
+      "name": "Rabbit", 
+      "need": "I only eat plants and vegetables!",
+      "fact": "Rabbits have special bacteria in their gut that help them digest tough plant fibers!",
+      "habitat": "Fields, meadows, and forest edges worldwide",
+      "relatedAnimals": ["Hares", "Guinea pigs", "Hamsters"],
+      "digestiveSystem": "Long intestines and special cecum for fermenting plant matter"
+    },
+    "bear": {
+      "name": "Bear",
+      "need": "I eat both plants and meat!",
+      "fact": "Bears can gain up to 200kg before hibernation by eating both berries and salmon!",
+      "habitat": "Forests, mountains, and tundra regions",
+      "relatedAnimals": ["Pandas", "Raccoons", "Wolverines"], 
+      "digestiveSystem": "Flexible digestive system that can process both plants and meat"
+    },
+    "eagle": {
+      "name": "Eagle",
+      "need": "I hunt for meat and fish!",
+      "fact": "Eagles have incredible eyesight - 8 times sharper than humans for spotting prey!",
+      "habitat": "Mountains, coasts, and near large bodies of water",
+      "relatedAnimals": ["Hawks", "Falcons", "Owls"],
+      "digestiveSystem": "Strong stomach acids to digest bones and tough meat"
+    },
+    "cow": {
+      "name": "Cow",
+      "need": "I love eating grass and plants!",
+      "fact": "Cows have 4 stomach chambers and chew their food twice to digest grass properly!",
+      "habitat": "Grasslands, pastures, and farms worldwide", 
+      "relatedAnimals": ["Buffalo", "Bison", "Goats"],
+      "digestiveSystem": "Four-chambered stomach system for breaking down cellulose"
+    },
+    "pig": {
+      "name": "Pig",
+      "need": "I enjoy both plants and other foods!",
+      "fact": "Pigs are incredibly smart - they can learn their names and solve puzzles!",
+      "habitat": "Farms, forests, and grasslands",
+      "relatedAnimals": ["Boars", "Hippos", "Warthogs"],
+      "digestiveSystem": "Single-chambered stomach similar to humans, processing varied diet"
+    }
+  },
+  "ingredientData": {
+    "meat": {
+      "fact": "Red meat is rich in protein and iron, essential for muscle development and energy!",
+      "habitat": "Processed from livestock like cattle and sheep"
+    },
+    "fish": {
+      "fact": "Fish is an excellent source of omega-3 fatty acids, great for brain health!",
+      "habitat": "Found in oceans, rivers, and lakes worldwide"
+    },
+    "chicken": {
+      "fact": "Chicken is lean protein that helps build strong muscles and bones!",
+      "habitat": "Domesticated birds raised on farms globally"
+    },
+    "worms": {
+      "fact": "Earthworms are 82% protein and help improve soil quality as they move!",
+      "habitat": "Found in moist soil and decomposing organic matter"
+    },
+    "insects": {
+      "fact": "Insects are eaten by 2 billion people worldwide and are very nutritious!",
+      "habitat": "Found everywhere on Earth except deep oceans"
+    },
+    "grass": {
+      "fact": "Grass contains cellulose which only herbivores can properly digest!",
+      "habitat": "Grows in meadows, lawns, and grasslands globally"
+    },
+    "leaves": {
+      "fact": "Leaves contain chlorophyll and provide vitamins and minerals!",
+      "habitat": "Found on trees and plants in forests and gardens"
+    },
+    "fruits": {
+      "fact": "Fruits are packed with vitamins, especially vitamin C for immunity!",
+      "habitat": "Grow on trees and bushes in orchards and wild areas"
+    },
+    "seeds": {
+      "fact": "Seeds contain all nutrients needed to grow into new plants!",
+      "habitat": "Found inside fruits or produced by flowering plants"
+    },
+    "carrots": {
+      "fact": "Carrots are rich in beta-carotene which helps improve eyesight!",
+      "habitat": "Root vegetables grown underground in gardens and farms"
+    },
+    "corn": {
+      "fact": "Corn provides energy through carbohydrates and is grown worldwide!",
+      "habitat": "Tall grass plant cultivated in fields across the globe"
+    },
+    "berries": {
+      "fact": "Berries are antioxidant powerhouses that fight harmful free radicals!",
+      "habitat": "Grow on bushes in forests, gardens, and wild areas"
+    }
+  }
+}

@@ -3,6 +3,11 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
+// Import translation files
+import enTranslations from '../../../../locales/en.json';
+import hiTranslations from '../../../../locales/hi.json';
+import orTranslations from '../../../../locales/or.json';
+
 // Types
 interface Ingredient {
   id: string;
@@ -530,17 +535,18 @@ const EnhancedFactModal: React.FC<{
   onClose: () => void; 
   animal: Animal;
   onAskQuestion: (question: string) => void;
-}> = ({ show, onClose, animal, onAskQuestion }) => {
+  t: any;
+}> = ({ show, onClose, animal, onAskQuestion, t }) => {
   const [selectedTab, setSelectedTab] = useState('general');
   const [customQuestion, setCustomQuestion] = useState('');
 
   if (!show) return null;
 
   const tabs = [
-    { id: 'general', label: ' General', icon: '📖' },
-    { id: 'habitat', label: '🏠 Habitat', icon: '🌍' },
-    { id: 'digestion', label: ' Digestion', icon: '⚡' },
-    { id: 'related', label: '👨‍👩‍👧 Family', icon: '🦴' }
+    { id: 'general', label: t.modals?.animalFacts?.tabs?.general || 'General', icon: '📖' },
+    { id: 'habitat', label: t.modals?.animalFacts?.tabs?.habitat || 'Habitat', icon: '🌍' },
+    { id: 'digestion', label: t.modals?.animalFacts?.tabs?.digestion || 'Digestion', icon: '⚡' },
+    { id: 'related', label: t.modals?.animalFacts?.tabs?.family || 'Family', icon: '🦴' }
   ];
 
   const handleQuestionClick = (question: string) => {
@@ -554,15 +560,15 @@ const EnhancedFactModal: React.FC<{
         return (
           <div className="space-y-3">
             <p className="text-gray-700 text-sm leading-relaxed">
-              <strong>Fun Fact:</strong> {animal.fact}
+              <strong>{t.modals?.animalFacts?.funFact || "Fun Fact:"}</strong> {(t.animalData as any)?.[animal.id]?.fact || animal.fact}
             </p>
             <div className="bg-blue-50 p-3 rounded-lg">
-              <h4 className="font-semibold text-blue-800 mb-2"> Quick Questions:</h4>
+              <h4 className="font-semibold text-blue-800 mb-2">{t.modals?.animalFacts?.quickQuestions || "Quick Questions:"}</h4>
               <div className="space-y-2">
                 {[
-                  `Why does ${animal.name} eat ${animal.preferredTypes[0]}?`,
-                  `How big is a ${animal.name}?`,
-                  `What makes ${animal.name} special?`
+                  `Why does ${(t.animalData as any)?.[animal.id]?.name || animal.name} eat ${animal.preferredTypes[0]}?`,
+                  `How big is a ${(t.animalData as any)?.[animal.id]?.name || animal.name}?`,
+                  `What makes ${(t.animalData as any)?.[animal.id]?.name || animal.name} special?`
                 ].map((q, i) => (
                   <button
                     key={i}
@@ -581,13 +587,13 @@ const EnhancedFactModal: React.FC<{
         return (
           <div className="space-y-3">
             <p className="text-gray-700 text-sm leading-relaxed">
-              <strong>Habitat:</strong> {animal.habitat}
+              <strong>{t.modals?.animalFacts?.habitat || "Habitat:"}</strong> {(t.animalData as any)?.[animal.id]?.habitat || animal.habitat}
             </p>
             <div className="bg-green-50 p-3 rounded-lg">
-              <h4 className="font-semibold text-green-800 mb-2">🌍 Learn More:</h4>
+              <h4 className="font-semibold text-green-800 mb-2">{t.modals?.animalFacts?.learnMore || "Learn More:"}</h4>
               <div className="space-y-2">
                 {[
-                  `Where exactly do ${animal.name}s live?`,
+                  `Where exactly do ${(t.animalData as any)?.[animal.id]?.name || animal.name}s live?`,
                   `What threats do they face?`,
                   `How do they adapt to their environment?`
                 ].map((q, i) => (
@@ -608,15 +614,15 @@ const EnhancedFactModal: React.FC<{
         return (
           <div className="space-y-3">
             <p className="text-gray-700 text-sm leading-relaxed">
-              <strong>Digestive System:</strong> {animal.digestiveSystem}
+              <strong>{t.modals?.animalFacts?.digestiveSystem || "Digestive System:"}</strong> {(t.animalData as any)?.[animal.id]?.digestiveSystem || animal.digestiveSystem}
             </p>
             <div className="bg-orange-50 p-3 rounded-lg">
-              <h4 className="font-semibold text-orange-800 mb-2"> Digestion Questions:</h4>
+              <h4 className="font-semibold text-orange-800 mb-2">{t.modals?.animalFacts?.digestionQuestions || "Digestion Questions:"}</h4>
               <div className="space-y-2">
                 {[
-                  `How does ${animal.name} digest food?`,
+                  `How does ${(t.animalData as any)?.[animal.id]?.name || animal.name} digest food?`,
                   `What happens to the food after eating?`,
-                  `Why can't ${animal.name} eat everything?`
+                  `Why can't ${(t.animalData as any)?.[animal.id]?.name || animal.name} eat everything?`
                 ].map((q, i) => (
                   <button
                     key={i}
@@ -635,13 +641,13 @@ const EnhancedFactModal: React.FC<{
         return (
           <div className="space-y-3">
             <p className="text-gray-700 text-sm leading-relaxed">
-              <strong>Related Animals:</strong> {animal.relatedAnimals?.join(', ') || 'None specified'}
+              <strong>{t.modals?.animalFacts?.relatedAnimals || "Related Animals:"}</strong> {(t.animalData as any)?.[animal.id]?.relatedAnimals?.join(', ') || animal.relatedAnimals?.join(', ') || 'None specified'}
             </p>
             <div className="bg-purple-50 p-3 rounded-lg">
-              <h4 className="font-semibold text-purple-800 mb-2"> Family Questions:</h4>
+              <h4 className="font-semibold text-purple-800 mb-2">{t.modals?.animalFacts?.familyQuestions || "Family Questions:"}</h4>
               <div className="space-y-2">
                 {[
-                  `What animals are related to ${animal.name}?`,
+                  `What animals are related to ${(t.animalData as any)?.[animal.id]?.name || animal.name}?`,
                   `How are they similar?`,
                   `What makes them different?`
                 ].map((q, i) => (
@@ -670,8 +676,8 @@ const EnhancedFactModal: React.FC<{
         <div className="bg-gradient-to-r from-sky-400 to-blue-500 text-white p-4">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="text-lg font-bold"> Learn About {animal.name}</h3>
-              <p className="text-sky-100 text-sm">Explore different topics!</p>
+              <h3 className="text-lg font-bold">{t.modals?.animalFacts?.title?.replace('{animalName}', (t.animalData as any)?.[animal.id]?.name || animal.name) || `Learn About ${animal.name}`}</h3>
+              <p className="text-sky-100 text-sm">{t.modals?.animalFacts?.subtitle || "Explore different topics!"}</p>
             </div>
             <button
               onClick={onClose}
@@ -714,7 +720,7 @@ const EnhancedFactModal: React.FC<{
               type="text"
               value={customQuestion}
               onChange={(e) => setCustomQuestion(e.target.value)}
-              placeholder="Ask your own question..."
+              placeholder={t.modals?.animalFacts?.customQuestion || "Ask your own question..."}
               className="flex-1 px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               onKeyPress={(e) => {
                 if (e.key === 'Enter' && customQuestion.trim()) {
@@ -727,7 +733,7 @@ const EnhancedFactModal: React.FC<{
               disabled={!customQuestion.trim()}
               className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-600 transition-colors"
             >
-              Ask
+              {t.buttons?.ask || "Ask"}
             </button>
           </div>
         </div>
@@ -742,7 +748,8 @@ const SuccessModal: React.FC<{
   animal: Animal;
   onShowFact: () => void;
   onTopicSelect: (topic: string) => void;
-}> = ({ show, onNext, isCorrect, onShowFact, onTopicSelect }) => {
+  t: any;
+}> = ({ show, onNext, isCorrect, onShowFact, onTopicSelect, t }) => {
   if (!show) return null;
 
   return (
@@ -752,10 +759,10 @@ const SuccessModal: React.FC<{
           {isCorrect ? '👍' : '😅'}
         </div>
         <h2 className="text-xl font-semibold text-gray-800 mb-4">
-          {isCorrect ? 'Congratulations!' : 'Good try!'}
+          {isCorrect ? (t.modals?.success?.congratulations || 'Congratulations!') : (t.modals?.success?.goodTry || 'Good try!')}
         </h2>
         <p className="text-gray-600 mb-4 text-sm">
-          {isCorrect ? 'You fed the animal correctly!' : 'Try again with different food!'}
+          {isCorrect ? (t.modals?.success?.fedCorrectly || 'You fed the animal correctly!') : (t.modals?.success?.tryAgainMessage || 'Try again with different food!')}
         </p>
 
         {isCorrect && (
@@ -766,7 +773,7 @@ const SuccessModal: React.FC<{
               <div className="flex flex-wrap gap-2 justify-center">
                 {['Digestive System', 'Habitat', 'Related Animals'].map((topic) => (
                   <button
-                    key={topic}
+                    key={topic} 
                     onClick={() => onTopicSelect(topic)}
                     className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium hover:bg-blue-200 transition-colors"
                   >
@@ -782,13 +789,13 @@ const SuccessModal: React.FC<{
                 onClick={onShowFact}
                 className="flex-1 bg-green-100 text-green-800 py-2 px-4 rounded-lg font-medium text-sm hover:bg-green-200 transition-colors"
               >
-                 Fun Facts
+                {t.modals?.success?.funFacts || "🧠 Fun Facts"}
               </button>
               <button
                 onClick={onNext}
                 className="flex-1 bg-gradient-to-r from-sky-400 to-blue-500 text-white py-2 px-4 rounded-lg font-medium text-sm hover:from-sky-500 hover:to-blue-600 transition-colors"
               >
-                {isCorrect ? 'Next Animal' : 'Try Again'}
+                {isCorrect ? (t.buttons?.nextAnimal || 'Next Animal') : (t.buttons?.tryAgain || 'Try Again')}
               </button>
             </div>
           </div>
@@ -799,7 +806,7 @@ const SuccessModal: React.FC<{
             onClick={onNext}
             className="bg-gradient-to-r from-sky-400 to-blue-500 text-white px-8 py-3 rounded-lg font-medium hover:from-sky-500 hover:to-blue-600 transition-colors"
           >
-            Try Again
+            {t.buttons?.tryAgain || 'Try Again'}
           </button>
         )}
       </div>
@@ -807,7 +814,14 @@ const SuccessModal: React.FC<{
   );
 };
 
-// Main game component
+// Translation object using imported files
+const translations = {
+  en: enTranslations,
+  hi: hiTranslations,
+  or: orTranslations
+};
+
+// Main game component  
 export default function EnergyChefGame() {
   const [currentAnimal, setCurrentAnimal] = useState<Animal>(ANIMALS[0]);
   const [cookingPot, setCookingPot] = useState<string[]>([]);
@@ -816,6 +830,10 @@ export default function EnergyChefGame() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [animalIndex, setAnimalIndex] = useState(0);
   const [feedbackCorrect, setFeedbackCorrect] = useState(false);
+  
+  // Language state
+  const [currentLanguage, setCurrentLanguage] = useState<'en' | 'hi' | 'or'>('en');
+  const t = (translations as any)[currentLanguage];
   
   // Enhanced interaction states
   const [showAnimalFact, setShowAnimalFact] = useState(false);
@@ -942,21 +960,29 @@ export default function EnergyChefGame() {
             <Link href="https://eklavyaa.vercel.app/chapters/science-world" className="p-2 rounded-lg hover:bg-beige transition-colors text-2xl">
               ←
             </Link>
-            <h1 className="text-xl font-semibold text-gray-800">Energy Chef 🧑‍🍳</h1>
-            <div className="w-10"></div>
+            <h1 className="text-xl font-semibold text-gray-800">{t.header.title}</h1>
+            <select 
+              value={currentLanguage} 
+              onChange={(e) => setCurrentLanguage(e.target.value as 'en' | 'hi' | 'or')}
+              className="bg-white border border-gray-300 rounded-lg px-2 py-1 text-sm"
+            >
+              <option value="en">🇺🇸 EN</option>
+              <option value="hi">🇮🇳 हिं</option>
+              <option value="or">🇮🇳 ଓଡ଼</option>
+            </select>
           </div>
         
           {/* Progress Bar */}
           <div className="px-4 pb-3 bg-gradient-to-r from-sky-50 to-blue-50">
             <div className="flex justify-between items-center text-sm">
               <div className="flex items-center gap-2">
-                <span className="text-gray-600">🎯 Progress:</span>
+                <span className="text-gray-600">{t.progress.label}</span>
                 <div className="bg-white rounded-full px-2 py-1 text-blue-600 font-medium">
-                  {completedAnimals.length}/{ANIMALS.length} animals
+                  {t.progress.completed.replace('{completed}', completedAnimals.length.toString()).replace('{total}', ANIMALS.length.toString())}
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-gray-600">❓ Questions:</span>
+                <span className="text-gray-600">{t.progress.questions}</span>
                 <div className="bg-white rounded-full px-2 py-1 text-purple-600 font-medium">
                   {userQuestions.length}
                 </div>
@@ -982,9 +1008,9 @@ export default function EnergyChefGame() {
             <div className="text-6xl mb-2">{currentAnimal.emoji}</div>
             <div className="bg-white rounded-lg p-4 shadow-sm max-w-xs">
               <div className="text-sm font-bold text-gray-700 mb-2">
-                {currentAnimal.name} - {currentAnimal.dietType}
+                {(t.animalData as any)?.[currentAnimal.id]?.name || currentAnimal.name} - {(t.animal as any)[currentAnimal.dietType.toLowerCase()] || currentAnimal.dietType}
               </div>
-              <p className="text-gray-800 font-medium text-sm">&ldquo;{currentAnimal.need}&rdquo;</p>
+              <p className="text-gray-800 font-medium text-sm">&ldquo;{(t.animalData as any)?.[currentAnimal.id]?.need || currentAnimal.need}&rdquo;</p>
             </div>
           </div>
         </div>
@@ -994,10 +1020,10 @@ export default function EnergyChefGame() {
           <div className={`bg-white rounded-2xl p-8 text-center shadow-lift min-h-32 border-4 border-dashed border-taupe transition-all cooking-pot ${isAnimating ? 'cooking' : ''}`}>
             <div className="text-4xl mb-4"></div>
             {isAnimating && (
-              <div className="text-sm text-gray-600 mb-2 animate-pulse">Preparing the food...</div>
+              <div className="text-sm text-gray-600 mb-2 animate-pulse">{t.cookingPot.preparing}</div>
             )}
             {cookingPot.length === 0 ? (
-              <p className="text-gray-500">Tap food items to feed the animal (max 2 items)</p>
+              <p className="text-gray-500">{t.cookingPot.empty}</p>
             ) : (
               <div className="flex flex-wrap gap-2 justify-center">
                 {cookingPot.map((ingredientId) => {
@@ -1018,7 +1044,7 @@ export default function EnergyChefGame() {
             )}
             {cookingPot.length > 0 && (
               <p className="text-xs text-gray-500 mt-2">
-                {cookingPot.length}/2 items selected
+                {t.cookingPot.selectedItems.replace('{count}', cookingPot.length.toString())}
               </p>
             )}
           </div>
@@ -1026,7 +1052,7 @@ export default function EnergyChefGame() {
 
         {/* Ingredients */}
         <div className="px-6 mb-8">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">Choose Food Items</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">{t.ingredients.title}</h3>
           <div className="grid grid-cols-4 gap-3">
             {INGREDIENTS.map((ingredient) => (
               <div key={ingredient.id} className="relative">
@@ -1037,13 +1063,13 @@ export default function EnergyChefGame() {
                   disabled={cookingPot.includes(ingredient.id) || cookingPot.length >= 2}
                 >
                   <div className="text-2xl mb-1">{ingredient.emoji}</div>
-                  <div className="text-xs text-gray-700 font-medium">{ingredient.name}</div>
+                  <div className="text-xs text-gray-700 font-medium">{(t.ingredients as any)?.[ingredient.id] || ingredient.name}</div>
                 </button>
                 {/* Fact Button */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    setShowIngredientFact(ingredient.name);
+                    setShowIngredientFact(ingredient.id);
                   }}
                   className="absolute -top-1 -right-1 bg-gray-400 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-gray-500 transition-colors shadow-sm"
                   title="Learn about this ingredient"
@@ -1063,14 +1089,14 @@ export default function EnergyChefGame() {
               className="flex-1 bg-taupe text-gray-700 py-4 rounded-xl font-medium hover:scale-105 transition-transform shadow-soft"
               disabled={isAnimating}
             >
-              Reset
+              {t.buttons?.reset || "Reset"}
             </button>
             <button
               onClick={cookMeal}
               disabled={cookingPot.length === 0 || isAnimating}
               className="flex-1 bg-gradient-to-r from-mint to-green-300 text-gray-800 py-4 rounded-xl font-medium hover:scale-105 transition-transform shadow-soft disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
-              {isAnimating ? 'Feeding...' : 'Feed Animal '}
+              {isAnimating ? (t.buttons?.feeding || 'Feeding...') : (t.buttons?.feedAnimal || 'Feed Animal 🍽️')}
             </button>
           </div>
         </div>
@@ -1079,10 +1105,19 @@ export default function EnergyChefGame() {
         <div className="px-6 pb-6">
           <div className="bg-white rounded-lg p-4 shadow-sm border-l-4 border-gold">
             <p className="text-sm text-gray-600">
-              <span className="font-medium">Tip:</span> The {currentAnimal.name.toLowerCase()} is {currentAnimal.dietType.toLowerCase()}! 
-              {currentAnimal.dietType === 'Carnivorous' && ' It only eats meat.'}
-              {currentAnimal.dietType === 'Herbivorous' && ' It only eats plants.'}
-              {currentAnimal.dietType === 'Omnivorous' && ' It eats both plants and meat.'}
+              <span className="font-medium">{t.hints?.tipLabel || "Tip:"}</span> 
+              {currentAnimal.dietType === 'Carnivorous' && (
+                t.hints?.carnivorous?.replace('{animalName}', ((t.animalData as any)?.[currentAnimal.id]?.name || currentAnimal.name)) || 
+                `${((t.animalData as any)?.[currentAnimal.id]?.name || currentAnimal.name)} is ${(t.animal as any)?.[currentAnimal.dietType.toLowerCase()] || currentAnimal.dietType.toLowerCase()}! It only eats meat.`
+              )}
+              {currentAnimal.dietType === 'Herbivorous' && (
+                t.hints?.herbivorous?.replace('{animalName}', ((t.animalData as any)?.[currentAnimal.id]?.name || currentAnimal.name)) || 
+                `${((t.animalData as any)?.[currentAnimal.id]?.name || currentAnimal.name)} is ${(t.animal as any)?.[currentAnimal.dietType.toLowerCase()] || currentAnimal.dietType.toLowerCase()}! It only eats plants.`
+              )}
+              {currentAnimal.dietType === 'Omnivorous' && (
+                t.hints?.omnivorous?.replace('{animalName}', ((t.animalData as any)?.[currentAnimal.id]?.name || currentAnimal.name)) || 
+                `${((t.animalData as any)?.[currentAnimal.id]?.name || currentAnimal.name)} is ${(t.animal as any)?.[currentAnimal.dietType.toLowerCase()] || currentAnimal.dietType.toLowerCase()}! It eats both plants and meat.`
+              )}
             </p>
           </div>
         </div>
@@ -1104,6 +1139,7 @@ export default function EnergyChefGame() {
           setSelectedTopics([topic]);
           setShowAISuggestions(true);
         }}
+        t={t}
       />
 
       {/* Enhanced Fact Modal */}
@@ -1112,6 +1148,7 @@ export default function EnergyChefGame() {
         onClose={() => setShowAnimalFact(false)}
         animal={currentAnimal}
         onAskQuestion={handleAskQuestion}
+        t={t}
       />
 
       {/* AI Suggestions Modal */}
@@ -1137,19 +1174,19 @@ export default function EnergyChefGame() {
         <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-2xl animate-scale-in border border-gray-300">
             <h3 className="text-lg font-bold text-gray-800 mb-3">
-               {INGREDIENTS.find(i => i.name === showIngredientFact)?.name} Facts
+              {t.modals?.ingredientFacts?.title?.replace('{ingredientName}', ((t.ingredients as any)?.[showIngredientFact] || INGREDIENTS.find(i => i.id === showIngredientFact)?.name)) || `${INGREDIENTS.find(i => i.id === showIngredientFact)?.name} Facts`}
             </h3>
             <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-              {INGREDIENTS.find(i => i.name === showIngredientFact)?.fact}
+              {(t.ingredientData as any)?.[showIngredientFact]?.fact || INGREDIENTS.find(i => i.id === showIngredientFact)?.fact}
             </p>
             <p className="text-gray-600 text-sm mb-4">
-              <strong>Found in:</strong> {INGREDIENTS.find(i => i.name === showIngredientFact)?.habitat}
+              <strong>{t.modals?.ingredientFacts?.foundIn || "Found in:"}</strong> {(t.ingredientData as any)?.[showIngredientFact]?.habitat || INGREDIENTS.find(i => i.id === showIngredientFact)?.habitat}
             </p>
             <button
               onClick={() => setShowIngredientFact(null)}
               className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-600 transition-colors"
             >
-              Got it! 
+              {t.buttons?.gotIt || "Got it! 👍"}
             </button>
           </div>
         </div>

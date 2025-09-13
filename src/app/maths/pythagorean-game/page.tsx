@@ -393,7 +393,10 @@ const PythagorasProof: React.FC = () => {
             <Link href="https://eklavyaa.vercel.app/chapters/maths-world" className="text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-2 text-sm">
               ← Back
             </Link>
-            <h1 className="text-lg font-bold text-gray-800">Pythagoras&apos; Playhouse 📐</h1>
+            <h1 className="text-lg flex justify-center items-center font-bold text-gray-800">
+              <span>Pythagoras&apos; house</span>
+               <span><img className='h-10' src={'/math.gif'} /></span>
+               </h1>
             <div className="w-12"></div>
           </div>
         </div>

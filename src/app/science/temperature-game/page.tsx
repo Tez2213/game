@@ -502,6 +502,14 @@ const TemperatureMaster: React.FC = () => {
             </div>
           </div>
         </div>
+        <div className="fixed bottom-4 right-4 flex flex-col items-center opacity-30 pointer-events-none">
+    <img 
+      src="/logo.png" 
+      alt="Eklavya Logo" 
+      className="w-10 mb-1"
+    />
+    <span className="text-xs font-bold text-black">Eklavya</span>
+  </div>
       </div>
 
       {/* Slider Styling */}

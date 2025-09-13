@@ -961,6 +961,14 @@ export default function SolarSystemExplorer() {
             </div>
           )}
         </div>
+        <div className="absolute bottom-4 right-4 flex flex-col items-center opacity-20 pointer-events-none">
+    <img 
+      src="/logo.png" 
+      alt="Eklavya Logo" 
+      className="w-10 mb-1"
+    />
+    <span className="text-xs font-bold text-black">Eklavya</span>
+  </div>
       </div>
     </div>
   );

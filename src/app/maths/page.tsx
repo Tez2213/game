@@ -4,7 +4,9 @@ export default function Maths() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-100 to-blue-100 flex items-center justify-center">
       <div className="text-center p-8 bg-white rounded-2xl shadow-lg max-w-lg mx-4">
-        <div className="text-6xl mb-4">🧮</div>
+        <div className="text-6xl flex justify-center items-center mb-4">
+          <img className='h-20' src={'/puzzle.gif'} />
+        </div>
         <h1 className="text-3xl font-bold text-gray-800 mb-2">Maths Games</h1>
         <p className="text-lg text-gray-600 mb-8">
           Choose a maths game to start learning
@@ -13,37 +15,37 @@ export default function Maths() {
         <div className="space-y-4">
           <Link 
             href="/maths/pythagorean-game"
-            className="block w-full bg-sky-400 hover:bg-sky-500 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-200"
+            className="flex gap-2 justify-center items-center w-full bg-sky-400 hover:bg-sky-500 text-white font-semibold py-1 rounded-lg transition-colors duration-200"
           >
-            📐 Pythagorean Theorem
+            <span><img className='h-10' src={'/pytha.gif'} /></span> <span>Pythagorean Theorem</span>
           </Link>
           
           <Link 
             href="/maths/prime-guardians"
-            className="block w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-200"
+            className="flex gap-2 justify-center items-center w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-1 rounded-lg transition-colors duration-200"
           >
-            🛡️ Prime Guardians
+            <span><img className='h-10' src={'/shield.gif'} /></span> <span>Prime Guardians</span> 
           </Link>
           
           <Link 
             href="/maths/natures-mirror"
-            className="block w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-200"
+            className="flex justify-center items-center gap-2 w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-1 rounded-lg transition-colors duration-200"
           >
-            🪞 Nature&apos;s Mirror
+            <span><img className='h-10' src={'/mirror.gif'} /></span> <span>Nature&apos;s Mirror</span> 
           </Link>
           
           <Link 
             href="/maths/number-mystics"
-            className="block w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-200"
+            className="flex justify-center items-center gap-2 w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-1 rounded-lg transition-colors duration-200"
           >
-            🔮 The Number Mystics
+            <span><img className='h-10' src={'/idea.gif'} /></span> <span>The Number Mystics</span> 
           </Link>
           
           <Link 
             href="/maths/deep-sea-diver"
-            className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-200"
+            className="flex justify-center items-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 rounded-lg transition-colors duration-200"
           >
-            🌊 Deep Sea Diver
+            <span><img className='h-10' src={'/wave.gif'} /></span> <span>Deep Sea Diver</span> 
           </Link>
         </div>
         

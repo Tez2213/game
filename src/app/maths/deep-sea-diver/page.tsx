@@ -234,8 +234,9 @@ export default function DeepSeaDiver() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-sky-400 via-blue-500 to-blue-900 flex items-center justify-center p-4">
         <div className="bg-white rounded-xl shadow-2xl p-8 max-w-2xl w-full">
-          <h1 className="text-4xl font-bold text-center mb-6 text-blue-900">
-            🌊 Deep Sea Diver 🚢
+          <h1 className="text-4xl flex justify-center items-center gap-4 font-bold text-center mb-6 text-blue-900">
+            <span>Deep Sea Diver</span>  
+            <span>< img src={'/icons8-ship.gif'} /></span>
           </h1>
           <div className="text-center mb-8">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">
@@ -250,7 +251,7 @@ export default function DeepSeaDiver() {
           <div className="space-y-4 mb-8">
             <h3 className="text-xl font-semibold text-gray-800">How to Play:</h3>
             <ul className="list-disc list-inside text-gray-600 space-y-2">
-              <li>🌊 Sea level = 0 meters (neutral point)</li>
+              <li> Sea level = 0 meters (neutral point)</li>
               <li>⬇️ Negative numbers = Below sea level (deeper)</li>
               <li>⬆️ Positive numbers = Above sea level (not allowed!)</li>
               <li>🎯 Complete missions by reaching target depths</li>

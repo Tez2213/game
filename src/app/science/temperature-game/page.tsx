@@ -24,7 +24,7 @@ const SCENARIOS: Scenario[] = [
     description: 'Water is bubbling and turning into steam',
     correctTemp: 100,
     unit: 'C',
-    emoji: '💧',
+    emoji: "/drop.gif",
     tolerance: 2,
     fact: 'Water boils at 100°C (212°F) at sea level. At higher altitudes, water boils at lower temperatures due to reduced atmospheric pressure!',
     relatedTopics: ['States of matter', 'Atmospheric pressure', 'Evaporation']
@@ -35,7 +35,7 @@ const SCENARIOS: Scenario[] = [
     description: 'Someone is feeling sick and has a high temperature',
     correctTemp: 38,
     unit: 'C',
-    emoji: '🤒',
+    emoji: '/fever.gif',
     tolerance: 1,
     fact: 'Normal human body temperature is around 37°C (98.6°F). A fever usually starts at 38°C (100.4°F) and helps fight infections!',
     relatedTopics: ['Human body', 'Immune system', 'Medical thermometers']
@@ -46,7 +46,7 @@ const SCENARIOS: Scenario[] = [
     description: 'Ice cubes are turning into liquid water',
     correctTemp: 0,
     unit: 'C',
-    emoji: '🧊',
+    emoji: '/icecube.gif',
     tolerance: 1,
     fact: 'Ice melts at 0°C (32°F). This is called the melting point of water. Adding salt can lower this temperature!',
     relatedTopics: ['Phase transitions', 'Freezing point', 'Solutions']
@@ -57,7 +57,7 @@ const SCENARIOS: Scenario[] = [
     description: 'A pleasant indoor environment for studying',
     correctTemp: 22,
     unit: 'C',
-    emoji: '🏠',
+    emoji: '/roomtemp.gif',
     tolerance: 3,
     fact: 'Most people find temperatures between 20-24°C (68-75°F) comfortable. This varies by humidity and personal preference!',
     relatedTopics: ['Thermal comfort', 'HVAC systems', 'Energy efficiency']
@@ -68,7 +68,7 @@ const SCENARIOS: Scenario[] = [
     description: 'A very warm day with bright sunshine',
     correctTemp: 35,
     unit: 'C',
-    emoji: '☀️',
+    emoji: '/hotsummer.gif',
     tolerance: 3,
     fact: 'Hot summer days can reach 35°C (95°F) or higher. Our bodies cool down through sweating and evaporation!',
     relatedTopics: ['Weather patterns', 'Heat regulation', 'Climate']
@@ -79,7 +79,7 @@ const SCENARIOS: Scenario[] = [
     description: 'A chilly day with frost on the ground',
     correctTemp: -5,
     unit: 'C',
-    emoji: '❄️',
+    emoji: '/coldwinter',
     tolerance: 3,
     fact: 'Winter temperatures can drop below 0°C (32°F). Frost forms when surfaces cool below the dew point!',
     relatedTopics: ['Weather', 'Frost formation', 'Seasonal changes']
@@ -284,7 +284,12 @@ const TemperatureMaster: React.FC = () => {
           <Link href="https://eklavyaa.vercel.app/chapters/science-world" className="text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-2 text-sm">
             ← Back
           </Link>
-          <h1 className="text-lg font-bold text-gray-800">🌡️ Temperature Master</h1>
+          <h1 className="text-lg font-bold flex gap-2 text-gray-800">
+            <span>
+              <img className='h-7' src={'/temp.gif'} />
+            </span> 
+            <span>Temperature Master</span>
+          </h1>
           <div className="text-sm text-gray-600">
             {score}/{attempts}
           </div>
@@ -298,7 +303,7 @@ const TemperatureMaster: React.FC = () => {
           {/* Thermometer Section */}
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 border border-white/20">
             <div className="text-center mb-4">
-              <div className="text-4xl mb-2">{currentScenario.emoji}</div>
+              <div className="text-4xl flex justify-center items-center mb-2"><img className='h-22' src={currentScenario.emoji} /></div>
               <h2 className="text-xl font-bold text-gray-800 mb-2">{currentScenario.title}</h2>
               <p className="text-gray-600 text-sm mb-4">{currentScenario.description}</p>
             </div>
@@ -342,9 +347,12 @@ const TemperatureMaster: React.FC = () => {
               {!showResult ? (
                 <button
                   onClick={checkAnswer}
-                  className="flex-1 bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white py-4 rounded-xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95"
+                  className="flex p-8 gap-4 bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white py-4 rounded-xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95"
                 >
-                  Check Temperature 🌡️
+                  <span>
+              <img className='h-7' src={'/temp.gif'} />
+            </span> 
+            <span>Check Temperature</span>
                 </button>
               ) : (
                 <>
@@ -356,9 +364,10 @@ const TemperatureMaster: React.FC = () => {
                   </button>
                   <button
                     onClick={nextScenario}
-                    className="flex-1 bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600 text-white py-3 rounded-xl font-bold text-sm transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95"
+                    className="flex justify-center items-center p-1 bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600 text-white py-3 rounded-xl font-bold text-sm transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95"
                   >
-                    Next Challenge 🚀
+                    <span>Next Challenge</span>
+                    <span><img className='h-8' src={'/rocket.gif'} /></span>
                   </button>
                 </>
               )}
@@ -370,14 +379,14 @@ const TemperatureMaster: React.FC = () => {
             
             {/* Result Display */}
             {showResult && (
-              <div className={`p-6 rounded-2xl shadow-xl border border-white/20 ${
+              <div className={`p-4 rounded-2xl shadow-xl border border-white/20 ${
                 isCorrect 
                   ? 'bg-gradient-to-r from-green-100 to-emerald-100' 
                   : 'bg-gradient-to-r from-red-100 to-pink-100'
               }`}>
                 <div className="text-center">
-                  <div className="text-4xl mb-2">
-                    {isCorrect ? '🎉' : '🤔'}
+                  <div className=" flex justify-center items-center mb-2">
+                    {isCorrect ? <img className='h-15' src={'/correct.gif'} /> : <img className='h-15' src={'/incorrect.gif' } />}
                   </div>
                   <h3 className={`text-xl font-bold mb-2 ${
                     isCorrect ? 'text-green-800' : 'text-red-800'
@@ -453,7 +462,7 @@ const TemperatureMaster: React.FC = () => {
 
             {/* Game Stats */}
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 border border-white/20">
-              <h4 className="font-bold text-gray-800 mb-3 text-center">📊 Your Progress</h4>
+              <h4 className="font-bold flex justify-center items-center gap-2 text-gray-800 mb-3 text-center"><span><img className='h-8' src={'/progress.gif'} /></span><span>Your Progress</span></h4>
               <div className="grid grid-cols-2 gap-4 text-center">
                 <div className="bg-gradient-to-r from-blue-50 to-sky-50 p-3 rounded-lg">
                   <div className="text-2xl font-bold text-blue-600">{score}</div>

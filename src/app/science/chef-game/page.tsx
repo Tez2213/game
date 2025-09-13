@@ -149,7 +149,7 @@ const ANIMALS: Animal[] = [
   {
     id: 'lion',
     name: 'Lion',
-    emoji: '🦁',
+    emoji: '/liongif.gif',
     dietType: 'Carnivorous',
     need: 'I only eat meat to stay strong!',
     preferredTypes: ['meat'],
@@ -162,7 +162,7 @@ const ANIMALS: Animal[] = [
   {
     id: 'rabbit',
     name: 'Rabbit',
-    emoji: '🐇',
+    emoji: '/rabbit.gif',
     dietType: 'Herbivorous',
     need: 'I only eat plants and vegetables!',
     preferredTypes: ['plants'],
@@ -175,7 +175,7 @@ const ANIMALS: Animal[] = [
   {
     id: 'bear',
     name: 'Bear',
-    emoji: '🐻',
+    emoji: '/bear.gif',
     dietType: 'Omnivorous',
     need: 'I eat both plants and meat!',
     preferredTypes: ['meat', 'plants'],
@@ -188,7 +188,7 @@ const ANIMALS: Animal[] = [
   {
     id: 'eagle',
     name: 'Eagle',
-    emoji: '🦅',
+    emoji: '/eagle.gif',
     dietType: 'Carnivorous',
     need: 'I hunt for meat and fish!',
     preferredTypes: ['meat'],
@@ -201,7 +201,7 @@ const ANIMALS: Animal[] = [
   {
     id: 'cow',
     name: 'Cow',
-    emoji: '🐄',
+    emoji: '/cow.gif',
     dietType: 'Herbivorous',
     need: 'I love eating grass and plants!',
     preferredTypes: ['plants'],
@@ -214,7 +214,7 @@ const ANIMALS: Animal[] = [
   {
     id: 'pig',
     name: 'Pig',
-    emoji: '🐷',
+    emoji: '/pig.gif',
     dietType: 'Omnivorous',
     need: 'I enjoy both plants and other foods!',
     preferredTypes: ['meat', 'plants'],
@@ -1003,9 +1003,15 @@ export default function EnergyChefGame() {
         <div className="p-6 text-center">
           <div 
             className="inline-block p-6 rounded-2xl shadow-soft mb-4 transition-all hover:scale-105"
-            style={{ backgroundColor: currentAnimal.color }}
+           style={{ 
+      backgroundColor: currentAnimal.color,
+      backgroundImage: "url('/grass1.png')", // grass as background
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+      backgroundPosition: "bottom"
+    }}
           >
-            <div className="text-6xl mb-2">{currentAnimal.emoji}</div>
+            <div className="text-6xl flex justify-center items-center mb-2"><img className='h-20' src={currentAnimal.emoji} /></div>
             <div className="bg-white rounded-lg p-4 shadow-sm max-w-xs">
               <div className="text-sm font-bold text-gray-700 mb-2">
                 {(t.animalData as any)?.[currentAnimal.id]?.name || currentAnimal.name} - {(t.animal as any)[currentAnimal.dietType.toLowerCase()] || currentAnimal.dietType}
@@ -1018,7 +1024,8 @@ export default function EnergyChefGame() {
         {/* Cooking Pot */}
         <div className="px-6 mb-8">
           <div className={`bg-white rounded-2xl p-8 text-center shadow-lift min-h-32 border-4 border-dashed border-taupe transition-all cooking-pot ${isAnimating ? 'cooking' : ''}`}>
-            <div className="text-4xl mb-4"></div>
+            <div className="text-4xl mb-4">
+            </div>
             {isAnimating && (
               <div className="text-sm text-gray-600 mb-2 animate-pulse">{t.cookingPot.preparing}</div>
             )}
@@ -1044,6 +1051,7 @@ export default function EnergyChefGame() {
             )}
             {cookingPot.length > 0 && (
               <p className="text-xs text-gray-500 mt-2">
+                  
                 {t.cookingPot.selectedItems.replace('{count}', cookingPot.length.toString())}
               </p>
             )}
@@ -1098,27 +1106,6 @@ export default function EnergyChefGame() {
             >
               {isAnimating ? (t.buttons?.feeding || 'Feeding...') : (t.buttons?.feedAnimal || 'Feed Animal 🍽️')}
             </button>
-          </div>
-        </div>
-
-        {/* Educational Hint */}
-        <div className="px-6 pb-6">
-          <div className="bg-white rounded-lg p-4 shadow-sm border-l-4 border-gold">
-            <p className="text-sm text-gray-600">
-              <span className="font-medium">{t.hints?.tipLabel || "Tip:"}</span> 
-              {currentAnimal.dietType === 'Carnivorous' && (
-                t.hints?.carnivorous?.replace('{animalName}', ((t.animalData as any)?.[currentAnimal.id]?.name || currentAnimal.name)) || 
-                `${((t.animalData as any)?.[currentAnimal.id]?.name || currentAnimal.name)} is ${(t.animal as any)?.[currentAnimal.dietType.toLowerCase()] || currentAnimal.dietType.toLowerCase()}! It only eats meat.`
-              )}
-              {currentAnimal.dietType === 'Herbivorous' && (
-                t.hints?.herbivorous?.replace('{animalName}', ((t.animalData as any)?.[currentAnimal.id]?.name || currentAnimal.name)) || 
-                `${((t.animalData as any)?.[currentAnimal.id]?.name || currentAnimal.name)} is ${(t.animal as any)?.[currentAnimal.dietType.toLowerCase()] || currentAnimal.dietType.toLowerCase()}! It only eats plants.`
-              )}
-              {currentAnimal.dietType === 'Omnivorous' && (
-                t.hints?.omnivorous?.replace('{animalName}', ((t.animalData as any)?.[currentAnimal.id]?.name || currentAnimal.name)) || 
-                `${((t.animalData as any)?.[currentAnimal.id]?.name || currentAnimal.name)} is ${(t.animal as any)?.[currentAnimal.dietType.toLowerCase()] || currentAnimal.dietType.toLowerCase()}! It eats both plants and meat.`
-              )}
-            </p>
           </div>
         </div>
 

@@ -949,20 +949,49 @@ export default function SolarSystemExplorer() {
                 {t.modals?.planetInfo?.close || "Close"}
               </button>
               <button
-                onClick={() => {
-                  setShowPlanetInfo(false);
-                  setShowAIsuggestions(false);
-                  setShowFacts(false);
-                  setHoloMode((prev) => !prev); // toggle holo mode state
-                }}
-                className="flex justify-center items-center bg-cyan-600 hover:bg-cyan-700 text-white py-2 rounded-lg font-medium transition-all shadow-lg shadow-cyan-500/40"
-              >
-                HoloMode ✨
-              </button>
+        onClick={() => {
+          setShowPlanetInfo(false);
+          setShowAIsuggestions(false);
+          setShowFacts(false);
+           setHoloMode(true)
+        }}
+        className=" flex justify-center items-center bg-cyan-600 hover:bg-cyan-700 text-white py-2 px-4 rounded-lg font-medium transition-all shadow-lg shadow-cyan-500/40"
+      >
+        HoloMode
+      </button>
             </div>
           </div>
         </div>
       )}
+        {/* 📺 Hologram Overlay */}
+{holoMode && (
+  <div
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+    onClick={() => setHoloMode(false)}
+  >
+    <div
+      className="relative w-full max-w-3xl aspect-video rounded-2xl overflow-hidden shadow-[0_0_25px_10px_rgba(0,255,255,0.6)] border border-cyan-400/60 animate-pulse"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <iframe
+        className="w-full h-full"
+        src="https://www.youtube.com/embed/of_ZndAGNU4?autoplay=1&mute=1"
+        title="YouTube video player"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+      ></iframe>
+
+      <button
+        onClick={() => setHoloMode(false)}
+        className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-bold"
+      >
+        Close ✖
+      </button>
+    </div>
+  </div>
+)}
 
       {/* Solar System View - Mobile centered */}
       <div className="absolute inset-0 flex items-center justify-center pt-20 pb-32">

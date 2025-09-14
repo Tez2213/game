@@ -967,7 +967,7 @@ export default function SolarSystemExplorer() {
         {/* 📺 Hologram Overlay */}
 {holoMode && (
   <div
-    className="fixed inset-0 z-50 bg-black backdrop-blur-sm"
+    className="fixed inset-0 z-50 bg-black backdrop-blur-sm p-2"
     onClick={() => setHoloMode(false)}
   >
     <div
@@ -986,9 +986,10 @@ export default function SolarSystemExplorer() {
           src="/hologram_earth.mp4"
           autoPlay
           muted
-          loop
           controls
           onLoadStart={() => setLoadingVideo(false)}
+          onEnded={() => setHoloMode(false)}
+          style={{ margin: '10px' }}
         />
 
         <button

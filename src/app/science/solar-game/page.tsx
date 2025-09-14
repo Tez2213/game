@@ -967,11 +967,11 @@ export default function SolarSystemExplorer() {
         {/* 📺 Hologram Overlay */}
 {holoMode && (
   <div
-    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+    className="fixed inset-0 z-50 bg-black backdrop-blur-sm"
     onClick={() => setHoloMode(false)}
   >
     <div
-      className="relative w-full max-w-3xl aspect-video rounded-2xl overflow-hidden shadow-[0_0_25px_10px_rgba(0,255,255,0.6)] border border-cyan-400/60 animate-pulse"
+      className="w-full h-full flex items-center justify-center"
       onClick={(e) => e.stopPropagation()}
     >
       {loadingVideo && (
@@ -981,23 +981,23 @@ export default function SolarSystemExplorer() {
         </div>
       )}
 
-      <iframe
-        className="w-full h-full"
-        src="https://www.youtube.com/embed/of_ZndAGNU4?autoplay=1&mute=1"
-        title="YouTube video player"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerPolicy="strict-origin-when-cross-origin"
-        allowFullScreen
-         onLoad={() => setLoadingVideo(false)}
-      ></iframe>
+      <div className="relative">
+        <video
+          src="/hologram_earth.mp4"
+          autoPlay
+          muted
+          loop
+          controls
+          onLoadStart={() => setLoadingVideo(false)}
+        />
 
-      <button
-        onClick={() => setHoloMode(false)}
-        className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-bold"
-      >
-        Close ✖
-      </button>
+        <button
+          onClick={() => setHoloMode(false)}
+          className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-bold z-10"
+        >
+          Close ✖
+        </button>
+      </div>
     </div>
   </div>
 )}

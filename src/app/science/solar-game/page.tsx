@@ -301,6 +301,7 @@ export default function SolarSystemExplorer() {
     "en"
   );
   const [holoMode, setHoloMode] = useState(false);
+  const [loadingVideo, setLoadingVideo] = useState(true);
   const translations = {
     en: enTranslations,
     hi: hiTranslations,
@@ -973,6 +974,13 @@ export default function SolarSystemExplorer() {
       className="relative w-full max-w-3xl aspect-video rounded-2xl overflow-hidden shadow-[0_0_25px_10px_rgba(0,255,255,0.6)] border border-cyan-400/60 animate-pulse"
       onClick={(e) => e.stopPropagation()}
     >
+      {loadingVideo && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-50">
+          <div className="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+          <span className="ml-3 text-cyan-400 font-semibold">Loading Hologram...</span>
+        </div>
+      )}
+
       <iframe
         className="w-full h-full"
         src="https://www.youtube.com/embed/of_ZndAGNU4?autoplay=1&mute=1"
@@ -981,6 +989,7 @@ export default function SolarSystemExplorer() {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerPolicy="strict-origin-when-cross-origin"
         allowFullScreen
+         onLoad={() => setLoadingVideo(false)}
       ></iframe>
 
       <button

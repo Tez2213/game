@@ -981,20 +981,25 @@ export default function SolarSystemExplorer() {
         </div>
       )}
 
-      <div className="relative">
+      <div className="relative w-full h-full max-w-[calc(100vw-20px)] max-h-[calc(100vh-20px)]">
         <video
           src="/hologram_earth.mp4"
           autoPlay
-          muted
           controls
           onLoadStart={() => setLoadingVideo(false)}
           onEnded={() => setHoloMode(false)}
-          style={{ margin: '10px' }}
+          className="w-full h-full object-contain"
+          style={{ 
+            maxWidth: '100%', 
+            maxHeight: '100%',
+            margin: '10px auto',
+            display: 'block'
+          }}
         />
 
         <button
           onClick={() => setHoloMode(false)}
-          className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-bold z-10"
+          className="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-bold z-10"
         >
           Close ✖
         </button>

@@ -414,6 +414,7 @@ export default function SolarSystemExplorer() {
   const [userInterests, setUserInterests] = useState<string[]>([]);
   const [showFacts, setShowFacts] = useState(false);
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   // Responsive design setup
   useEffect(() => {
@@ -492,6 +493,12 @@ export default function SolarSystemExplorer() {
       );
       setOrbitAngles((prev) => ({ ...prev, [planetData.name]: 0 }));
       playCorrectSound();
+      
+      // Show notification
+      setShowNotification(true);
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 4000);
     } else {
       // Incorrect placement - shake animation
       const element = document.querySelector(
@@ -727,6 +734,17 @@ export default function SolarSystemExplorer() {
       {showHint && (
         <div className="absolute top-36 left-2 right-2 z-20 bg-yellow-400 text-black px-4 py-2 rounded-lg font-medium shadow-xl text-center text-sm">
           💭 {currentHint}
+        </div>
+      )}
+
+      {/* Notification - Top Right */}
+      {showNotification && (
+        <div className="fixed top-12 right-4 z-50 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-lg shadow-2xl border-2 border-white/30 animate-bounce">
+          <div className="flex items-center gap-2">
+            <p className="font-semibold text-sm">
+              Click on orbiting planet for more details!
+            </p>
+          </div>
         </div>
       )}
 
